@@ -922,7 +922,8 @@ function normalizeState(input){
  out.packs=records('packs').map(x=>({...x,topic:String(x.topic||''),platform:String(x.platform||''),niche:String(x.niche||''),audience:String(x.audience||''),createdAt:String(x.createdAt||''),hook:String(x.hook||''),titles:Array.isArray(x.titles)?x.titles.map(String):[],script:String(x.script||''),description:String(x.description||''),keywords:String(x.keywords||''),thumbnail:String(x.thumbnail||''),shots:String(x.shots||'')}));
  out.posts=records('posts').map(x=>({...x,title:String(x.title||''),platform:String(x.platform||''),date:/^\d{4}-\d{2}-\d{2}$/.test(String(x.date||''))?String(x.date):'',status:['plan','planned','progress','done'].includes(x.status)?(x.status==='planned'?'plan':x.status):'plan'})).filter(x=>x.date);
  out.metrics=records('metrics').map(x=>({...x,title:String(x.title||''),date:/^\d{4}-\d{2}-\d{2}$/.test(String(x.date||''))?String(x.date):'',views:Math.max(0,Number(x.views)||0),likes:Math.max(0,Number(x.likes)||0),comments:Math.max(0,Number(x.comments)||0),shares:Math.max(0,Number(x.shares)||0)})).filter(x=>x.date);
- out.challenge=src.challenge&&typeof src.challenge==='object'&&!Array.isArray(src.challenge)?src.challenge:{};
+ const challengeSource=src.challenge&&typeof src.challenge==='object'&&!Array.isArray(src.challenge)?src.challenge:{};
+ out.challenge=Object.fromEntries(Array.from({length:30},(_,i)=>[i,challengeSource[i]===true]));
  out.focus=src.focus&&typeof src.focus==='object'&&!Array.isArray(src.focus)?{text:String(src.focus.text||'').slice(0,500),done:!!src.focus.done}:{...defaults.focus};
  out.settings={...defaults.settings,...(src.settings&&typeof src.settings==='object'&&!Array.isArray(src.settings)?src.settings:{})};
  out.profile=src.profile&&typeof src.profile==='object'&&!Array.isArray(src.profile)?{niche:String(src.profile.niche||'').slice(0,120),audience:String(src.profile.audience||'').slice(0,240),goal:String(src.profile.goal||'الاستمرارية والنشر المنتظم').slice(0,120),platforms:String(src.profile.platforms||'').slice(0,240)}:{niche:'',audience:'',goal:'الاستمرارية والنشر المنتظم',platforms:''};
@@ -1370,7 +1371,7 @@ all('[data-copy]').forEach(b=>b.addEventListener('click',()=>{const el=$(b.datas
 renderScriptTemplates();renderPrePublishChecks();
 function renderHome(){
  $('statIdeas').textContent=state.ideas.length;$('statPacks').textContent=state.packs.length;$('statPosts').textContent=state.posts.length;$('statViews').textContent=state.metrics.reduce((s,x)=>s+(+x.views||0),0).toLocaleString('en-US');
- const done=Object.values(state.challenge).filter(Boolean).length,pct=Math.round(done/30*100);$('homeChallengeBar').style.width=pct+'%';$('homeChallengeText').textContent=done+' من 30 مهمة';$('homeChallengePct').textContent=pct+'%';$('homeChallengeTitle').textContent=done?'استمر — أنت بتتقدم!':'ابدأ بأول خطوة';
+ const done=Array.from({length:30},(_,i)=>state.challenge?.[i]===true).filter(Boolean).length,pct=Math.round(done/30*100);$('homeChallengeBar').style.width=pct+'%';$('homeChallengeText').textContent=done+' من 30 مهمة';$('homeChallengePct').textContent=pct+'%';$('homeChallengeTitle').textContent=done?'استمر — أنت بتتقدم!':'ابدأ بأول خطوة';
  const recent=[...state.packs].reverse().slice(0,3);$('homeRecentPacks').innerHTML=recent.length?recent.map(p=>'<div class="saveditem"><div><b>'+safe(p.topic)+'</b><p>'+safe(p.platform||'')+'</p></div><button class="mini" data-open-home="'+safe(p.id)+'">فتح</button></div>').join(''):'<div class="empty">لسه مفيش حزم محفوظة.</div>';
  const recentProduction=(Array.isArray(state.productionProjects)?state.productionProjects:[]).filter(p=>p&&p.kind==='production_project').slice().sort((a,b)=>String(b.updatedAt||'').localeCompare(String(a.updatedAt||''))).slice(0,3);
  const recentProjectsHost=$('homeRecentProjects');
@@ -1502,16 +1503,67 @@ $('addMetric').addEventListener('click',()=>{const title=$('metricTitle').value.
 const tasks=['حدد المجال الأساسي لقناتك أو حسابك.','اكتب وصفًا واضحًا للجمهور الذي تريد الوصول إليه.','اكتب 10 أسئلة يطرحها جمهورك.','اختر 3 موضوعات مناسبة لأول محتوى.','اكتب فكرة أول فيديو أو منشور.','جهّز عنوانًا واضحًا لأول محتوى.','اكتب الخطاف لأول 5 ثوانٍ.','اكتب مسودة السكريبت أو النقاط الأساسية.','جهّز قائمة اللقطات المطلوبة.','اختر مكانًا مناسبًا للتصوير أو التسجيل.','جرّب الإضاءة والصوت قبل التسجيل.','سجّل نسخة تجريبية قصيرة.','راجع التسجيل وحدد ما يحتاج تحسينًا.','جهّز صورة مصغرة أو غلافًا واضحًا.','اكتب وصف المحتوى والكلمات المهمة.','حدد موعد نشر واقعي.','انشر أول محتوى أو جهزه للنشر.','أخبر جمهورك أو أصدقاءك بالمحتوى الجديد.','راقب التعليقات والأسئلة.','سجل نتائج أول منشور.','اكتب 3 أشياء تعلمتها من التجربة.','ابدأ فكرة المحتوى الثاني.','جرّب صيغة أو أسلوبًا مختلفًا.','حسّن العنوان أو الصورة وفق ما تعلمته.','جهّز محتوى قصيرًا من فكرة سابقة.','انشر محتوى جديدًا.','راجع أسئلة الجمهور لاستخراج أفكار جديدة.','خطط لأسبوع قادم من المحتوى.','قارن تقدمك بأول يوم.','اكتب خطتك للشهر القادم واحتفل باستمرارك.'];
 let challengeFilter='all';
 function renderChallenge(){
- const done=tasks.reduce((n,_,i)=>n+(state.challenge[i]===true?1:0),0),left=tasks.length-done,pct=Math.round(done/tasks.length*100),milestones=[0,1,2].filter(n=>Array.from({length:10},(_,j)=>state.challenge[n*10+j]===true).every(Boolean)).length,next=tasks.findIndex((_,i)=>state.challenge[i]!==true);
- $('challengeBar').style.width=pct+'%';$('challengePct').textContent=pct+'%';$('challengeDone').textContent=done+'/30';$('challengeLeft').textContent=left;$('challengeMilestone').textContent=milestones+'/3';$('challengeRing').style.setProperty('--progress',pct+'%');
+ const isDone=index=>state.challenge?.[index]===true;
+ const done=tasks.reduce((count,_,index)=>count+(isDone(index)?1:0),0);
+ const left=tasks.length-done;
+ const pct=Math.round(done/tasks.length*100);
+ const milestones=[0,1,2].filter(phase=>Array.from({length:10},(_,day)=>isDone(phase*10+day)).every(Boolean)).length;
+ const next=tasks.findIndex((_,index)=>!isDone(index));
+
+ $('challengeBar').style.width=pct+'%';
+ $('challengePct').textContent=pct+'%';
+ $('challengeDone').textContent=done+'/30';
+ $('challengeLeft').textContent=left;
+ $('challengeMilestone').textContent=milestones+'/3';
+ $('challengeRing').style.setProperty('--progress',pct+'%');
  $('challengeHeadline').textContent=done===30?'أنت بطل التحدي! 🎉':done>=20?'أنت قريب جدًا من هدفك!':done>=10?'نص الطريق تقريبًا.. كمّل!':done>0?'بداية ممتازة، استمر!':'كل بداية قوية تبدأ بخطوة';
- $('challengeSubline').textContent=done===30?'أنهيت كل الخطوات. احتفل بإنجازك وخطط للمرحلة الجاية.': 'أنجزت '+done+' من 30 خطوة — خطوة واحدة كل مرة تصنع فرقًا.';
+ $('challengeSubline').textContent=done===30?'أنهيت كل الخطوات. احتفل بإنجازك وخطط للمرحلة الجاية.':'أنجزت '+done+' من 30 خطوة — خطوة واحدة كل مرة تصنع فرقًا.';
  $('challengeNext').innerHTML=next<0?'<div><small>اكتمل التحدي</small><strong>أنجزت الرحلة كاملة 🏆</strong><p>راجع نتائجك وابدأ تحديًا جديدًا بهدف أكبر.</p></div>':'<div><small>خطوتك التالية · اليوم '+(next+1)+'</small><strong>'+safe(tasks[next])+'</strong><p>ابدأ بها الآن، ومش لازم تخلص كل حاجة مرة واحدة.</p></div><button type="button" id="challengeGoNext">ابدأ المهمة ←</button>';
- const groups=[{name:'المرحلة الأولى: التأسيس والتخطيط',sub:'الأيام 1–10 · اعرف جمهورك وجهّز فكرتك'},{name:'المرحلة الثانية: الإنتاج والنشر',sub:'الأيام 11–20 · حوّل الفكرة لمحتوى حقيقي'},{name:'المرحلة الثالثة: التطوير والاستمرار',sub:'الأيام 21–30 · تعلّم وحسّن خطوتك القادمة'}];
- $('challengeList').innerHTML=groups.map((g,group)=>{const items=tasks.map((t,i)=>({t,i})).filter(x=>Math.floor(x.i/10)===group&&(challengeFilter==='all'||(challengeFilter==='done'?state.challenge[x.i]===true:state.challenge[x.i]!==true)));if(!items.length)return '';const count=items.filter(x=>state.challenge[x.i]===true).length;return '<div class="challenge-phase"><div class="challenge-phase-head"><div><strong>'+g.name+'</strong><br><small>'+g.sub+'</small></div><small>'+count+'/10 مكتمل</small></div><div class="challenge">'+items.map(x=>'<label class="'+(state.challenge[x.i]?'done':'')+'"><input type="checkbox" data-task="'+x.i+'" '+(state.challenge[x.i]?'checked':'')+'><span><b>اليوم '+(x.i+1)+'</b>'+safe(x.t)+'</span></label>').join('')+'</div></div>';}).join('')||'<div class="empty">مفيش مهام في التصنيف ده حاليًا.</div>';
- all('[data-task]').forEach(c=>c.addEventListener('change',()=>{state.challenge[c.dataset.task]=c.checked;save();renderChallenge();renderHome();}));
- all('[data-challenge-filter]').forEach(b=>b.classList.toggle('active',b.dataset.challengeFilter===challengeFilter));
- const go=$('challengeGoNext');if(go)go.addEventListener('click',()=>{const target=$('[data-task="'+next+'"]');if(target){target.closest('label').scrollIntoView({behavior:'smooth',block:'center'});target.focus();}});
+
+ const groups=[
+  {name:'المرحلة الأولى: التأسيس والتخطيط',sub:'الأيام 1–10 · اعرف جمهورك وجهّز فكرتك'},
+  {name:'المرحلة الثانية: الإنتاج والنشر',sub:'الأيام 11–20 · حوّل الفكرة لمحتوى حقيقي'},
+  {name:'المرحلة الثالثة: التطوير والاستمرار',sub:'الأيام 21–30 · تعلّم وحسّن خطوتك القادمة'}
+ ];
+ $('challengeList').innerHTML=groups.map((groupData,groupIndex)=>{
+  const phaseItems=tasks.map((task,index)=>({task,index})).filter(item=>Math.floor(item.index/10)===groupIndex);
+  const visibleItems=phaseItems.filter(item=>challengeFilter==='all'||(challengeFilter==='done'?isDone(item.index):!isDone(item.index)));
+  if(!visibleItems.length)return '';
+  const phaseDone=phaseItems.filter(item=>isDone(item.index)).length;
+  return '<div class="challenge-phase"><div class="challenge-phase-head"><div><strong>'+groupData.name+'</strong><br><small>'+groupData.sub+'</small></div><small>'+phaseDone+'/10 مكتمل</small></div><div class="challenge">'+visibleItems.map(item=>'<label class="'+(isDone(item.index)?'done':'')+'"><input type="checkbox" data-task="'+item.index+'" '+(isDone(item.index)?'checked':'')+'><span><b>اليوم '+(item.index+1)+'</b>'+safe(item.task)+'</span></label>').join('')+'</div></div>';
+ }).join('')||'<div class="empty">مفيش مهام في التصنيف ده حاليًا.</div>';
+
+ all('[data-task]').forEach(checkbox=>checkbox.addEventListener('change',()=>{
+  const index=Number(checkbox.dataset.task);
+  if(!Number.isInteger(index)||index<0||index>=tasks.length)return;
+  state.challenge[index]=checkbox.checked===true;
+  save();
+  renderChallenge();
+  renderHome();
+ }));
+ all('[data-challenge-filter]').forEach(button=>{
+  const active=button.dataset.challengeFilter===challengeFilter;
+  button.classList.toggle('active',active);
+  button.setAttribute('aria-pressed',String(active));
+ });
+ const nextButton=$('challengeGoNext');
+ if(nextButton)nextButton.addEventListener('click',()=>{
+  if(next<0)return;
+  if(challengeFilter==='done'){
+   challengeFilter='todo';
+   renderChallenge();
+  }
+  let target=all('[data-task]').find(input=>Number(input.dataset.task)===next);
+  if(!target){
+   challengeFilter='all';
+   renderChallenge();
+   target=all('[data-task]').find(input=>Number(input.dataset.task)===next);
+  }
+  if(!target){toast('تعذر الوصول للمهمة التالية. حدّث الصفحة وحاول مرة أخرى.');return;}
+  const label=target.closest('label');
+  if(label)label.scrollIntoView({behavior:'smooth',block:'center'});
+  target.focus();
+ });
 }
 all('[data-challenge-filter]').forEach(b=>b.addEventListener('click',()=>{challengeFilter=b.dataset.challengeFilter;renderChallenge();}));
 $('challengeReset').addEventListener('click',()=>{if(!confirm('متأكد إنك عايز تصفّر تقدم تحدي الـ30 يوم؟'))return;state.challenge={};save();renderChallenge();renderHome();toast('بدأنا التحدي من جديد. كل التوفيق!');});
