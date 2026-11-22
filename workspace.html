@@ -1,6 +1,18 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
+<script>
+(()=> {
+ const canonicalHost='sasa-antilaqatuk.github.io';
+ if(location.hostname==='hfpokf2-boop.github.io'){
+  const destination=new URL(location.href);
+  destination.protocol='https:';
+  destination.hostname=canonicalHost;
+  location.replace(destination.href);
+ }
+})();
+</script>
+
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0B1120">
 <meta name="description" content="مساحة عمل انطلاقتك لصناعة المحتوى: خطط الأفكار واكتب السكريبتات ونظم تقويم النشر وتابع أداء أعمالك.">
@@ -911,7 +923,7 @@ const $=id=>document.getElementById(id), all=(sel,root=document)=>Array.from(roo
 const DATA_VERSION=4;
 const defaults={schemaVersion:DATA_VERSION,ideas:[],packs:[],productionProjects:[],posts:[],metrics:[],challenge:{},focus:{text:"",done:false},scriptTemplates:[],prePublishChecks:{},settings:{aiMode:"local"}};
 const CLOUD_DIRTY_OWNER_KEY='entelaqtak-cloud-dirty-owner-v1';
-let sbClient=null,currentUser=null,passwordRecoveryMode=false,cloudLoading=false,cloudSaving=false,cloudSavePending=false,cloudLoadPending=false,localChangesPending=false,pendingRealtimeWorkspace=null,cloudSaveTimer=null,workspaceRealtimeChannel=null,realtimeConnected=false,authSdkPromise=null,authInitError=null;
+let sbClient=null,currentUser=null,passwordRecoveryMode=false,authSessionReady=false,cloudLoading=false,cloudSaving=false,cloudSavePending=false,cloudLoadPending=false,localChangesPending=false,pendingRealtimeWorkspace=null,cloudSaveTimer=null,workspaceRealtimeChannel=null,realtimeConnected=false,authSdkPromise=null,authInitError=null;
 function normalizeState(input){
  const src=input&&typeof input==='object'?input:{};
  const out={...defaults,...src,schemaVersion:DATA_VERSION};
@@ -984,8 +996,8 @@ function updateAccountUI(){
  $('authSyncNow').disabled=!currentUser||cloudLoading||cloudSaving;
  $('authSyncNow').textContent=cloudLoading?'جارٍ التحديث...':'مزامنة الآن ↻';
  $('authSyncMessage').textContent=!currentUser?'المزامنة متاحة بعد تسجيل الدخول.':cloudLoading?'جارٍ تحميل مساحة العمل...':cloudSaving?'جارٍ حفظ التعديلات...':realtimeConnected?'المزامنة المباشرة متصلة.':'الحساب متصل؛ الحفظ التلقائي متاح.';
- $('authSignIn').disabled=!!currentUser;
- $('authSignUp').disabled=!!currentUser;
+ $('authSignIn').disabled=!authSessionReady||!!currentUser;
+ $('authSignUp').disabled=!authSessionReady||!!currentUser;
 }
 function workspaceHasPendingLocalChanges(ownerId){
  if(localChangesPending||cloudSavePending||!!cloudSaveTimer)return true;
@@ -1221,35 +1233,76 @@ function isolateWorkspaceForAccount(ownerId){
 }
 async function connectAuth(){
  authInitError=null;
+ authSessionReady=false;
+ updateAccountUI();
  const config=window.ENTELAQTAK_CONFIG||{};
- if(!config.url||!config.publishableKey){setAuthMessage('إعدادات ربط قاعدة البيانات غير مكتملة.');return;}
+ if(!config.url||!config.publishableKey){
+  authSessionReady=true;
+  updateAccountUI();
+  setAuthMessage('إعدادات ربط قاعدة البيانات غير مكتملة.');
+  return;
+ }
  try{
   const sdk=await loadSupabaseSdk();
-  sbClient=sdk.createClient(config.url,config.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  // Keep the existing project-scoped key while explicitly persisting it in this origin's localStorage.
+  const authStorage=window.localStorage;
+  const authStorageKey='sb-dbetanrnhdabuachxdhc-auth-token';
+  sbClient=sdk.createClient(config.url,config.publishableKey,{
+   auth:{
+    persistSession:true,
+    autoRefreshToken:true,
+    detectSessionInUrl:true,
+    storage:authStorage,
+    storageKey:authStorageKey
+   }
+  });
   sbClient.auth.onAuthStateChange((event,session)=>{
    const previousUserId=currentUser?.id||null;
    if(event==='PASSWORD_RECOVERY')passwordRecoveryMode=true;
    else if(event==='SIGNED_IN'||event==='SIGNED_OUT')passwordRecoveryMode=false;
    currentUser=session?.user||null;
+   if(event==='INITIAL_SESSION')authSessionReady=true;
    if(currentUser)isolateWorkspaceForAccount(currentUser.id);
-   if(previousUserId&&currentUser?.id!==previousUserId){clearTimeout(cloudSaveTimer);cloudSaveTimer=null;cloudSavePending=false;cloudLoadPending=false;localChangesPending=false;stopWorkspaceRealtime();}
+   if(previousUserId&&currentUser?.id!==previousUserId){
+    clearTimeout(cloudSaveTimer);
+    cloudSaveTimer=null;
+    cloudSavePending=false;
+    cloudLoadPending=false;
+    localChangesPending=false;
+    stopWorkspaceRealtime();
+   }
    updateAccountUI();
-   if(event==='PASSWORD_RECOVERY'){$('authRecoveryBox').hidden=false;go('settings');setAuthMessage('تم فتح رابط الاستعادة. اكتب كلمة مرور جديدة بالأسفل.',false,'authSignInMessage');}
-   if(event==='SIGNED_OUT'){clearTimeout(cloudSaveTimer);cloudSaveTimer=null;cloudSavePending=false;cloudLoadPending=false;stopWorkspaceRealtime();}
+   if(event==='PASSWORD_RECOVERY'){
+    $('authRecoveryBox').hidden=false;
+    go('settings');
+    setAuthMessage('تم فتح رابط الاستعادة. اكتب كلمة مرور جديدة بالأسفل.',false,'authSignInMessage');
+   }
+   if(event==='SIGNED_OUT'){
+    clearTimeout(cloudSaveTimer);
+    cloudSaveTimer=null;
+    cloudSavePending=false;
+    cloudLoadPending=false;
+    stopWorkspaceRealtime();
+   }
    if(event==='SIGNED_IN')setTimeout(()=>loadCloudWorkspace(),0);
   });
+
+  // Restore the saved session before enabling the sign-in and sign-up controls.
+  setAuthMessage('جارٍ استعادة جلسة الدخول المحفوظة...',false,'authSignInMessage');
   const {data,error}=await sbClient.auth.getSession();
   if(error)throw error;
   currentUser=data.session?.user||null;
+  authSessionReady=true;
   if(currentUser)isolateWorkspaceForAccount(currentUser.id);
   updateAccountUI();
   if(currentUser)await loadCloudWorkspace();
-  else setAuthMessage('يمكنك استخدام الموقع دون حساب. سجّل الدخول فقط إذا أردت مزامنة أعمالك بين الأجهزة.');
+  else setAuthMessage('لا توجد جلسة محفوظة على هذا العنوان. سجّل الدخول مرة واحدة لتظل متصلًا عند تحديث الصفحة.',false,'authSignInMessage');
  }catch(error){
-  authInitError=error?.message||'تعذر تحميل مكتبة الاتصال.';
+  authSessionReady=true;
+  authInitError=error?.message||'تعذر استعادة جلسة الدخول.';
   console.error('Supabase initialization failed',error);
   updateAccountUI();
-  setAuthMessage('الأدوات الأساسية تعمل بدون تسجيل. تعذر تهيئة خدمة الحساب: '+authInitError+' يمكنك إعادة المحاولة من زر تسجيل الدخول.',true);
+  setAuthMessage('تعذر استعادة جلسة الدخول المحفوظة. تأكد من السماح بحفظ بيانات الموقع في المتصفح، ثم أعد المحاولة. '+authInitError,true);
  }
 }
 function normalizeAccountUsername(value){
