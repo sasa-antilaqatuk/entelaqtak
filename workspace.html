@@ -833,9 +833,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   <section class="card account-flow-card" id="accountLoginCard">
    <div class="account-flow-heading"><span>01 · SIGN IN</span><h2>تسجيل الدخول</h2></div>
    <p class="muted">ادخل إلى حسابك الحالي لاستعادة مساحة عملك ومزامنة بياناتك.</p>
-   <div class="field"><label for="loginEmail">البريد الإلكتروني</label><input id="loginEmail" type="email" autocomplete="username" inputmode="email" placeholder="name@example.com"></div>
+   <div class="field"><label for="loginUsername">اسم المستخدم</label><input id="loginUsername" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="اكتب اسم المستخدم"></div>
    <div class="field"><label for="loginPassword">كلمة المرور</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="كلمة مرور حسابك"></div>
-   <div class="actions"><button class="primary" id="authSignIn" type="button">تسجيل الدخول</button><button class="secondary" id="authReset" type="button">نسيت كلمة المرور؟</button></div>
+   <div class="actions"><button class="primary" id="authSignIn" type="button">تسجيل الدخول</button></div>
    <div id="authRecoveryBox" hidden>
     <div class="field"><label for="accountNewPassword">كلمة المرور الجديدة</label><input id="accountNewPassword" type="password" minlength="8" autocomplete="new-password" placeholder="اكتب كلمة مرور جديدة"></div>
     <button class="primary" id="authUpdatePassword" type="button">حفظ كلمة المرور الجديدة</button>
@@ -844,12 +844,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   </section>
   <section class="card account-flow-card" id="accountCreateCard">
    <div class="account-flow-heading"><span>02 · CREATE ACCOUNT</span><h2>إنشاء حساب جديد</h2></div>
-   <p class="muted">أنشئ حسابًا مستقلًا ببريدك الإلكتروني وكلمة مرور جديدة.</p>
-   <div class="field"><label for="accountCreateEmail">البريد الإلكتروني</label><input id="accountCreateEmail" type="email" autocomplete="email" inputmode="email" placeholder="name@example.com"></div>
+   <p class="muted">أنشئ حسابك باسم مستخدم خاص بك وكلمة مرور. لا تحتاج إلى بريد إلكتروني.</p>
+   <div class="field"><label for="accountCreateUsername">اسم المستخدم</label><input id="accountCreateUsername" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="24" placeholder="من 3 إلى 24 حرفًا أو رقمًا"></div>
    <div class="field"><label for="accountCreatePassword">كلمة المرور</label><input id="accountCreatePassword" type="password" minlength="8" autocomplete="new-password" placeholder="8 أحرف على الأقل"></div>
    <div class="field"><label for="accountCreatePasswordConfirm">تأكيد كلمة المرور</label><input id="accountCreatePasswordConfirm" type="password" minlength="8" autocomplete="new-password" placeholder="أعد كتابة كلمة المرور"></div>
    <div class="actions"><button class="primary" id="authSignUp" type="button">إنشاء الحساب</button></div>
-   <p id="authSignUpMessage" class="status-line" role="status" aria-live="polite">بعد الإنشاء قد تحتاج إلى تأكيد بريدك الإلكتروني.</p>
+   <p id="authSignUpMessage" class="status-line" role="status" aria-live="polite">احتفظ باسم المستخدم وكلمة المرور؛ لا يوجد استرداد تلقائي بدون بريد أو هاتف.</p>
   </section>
   <section class="card account-flow-card" id="accountSessionCard">
    <div class="account-flow-heading"><span>03 · ACCOUNT SESSION</span><h2>تسجيل الخروج</h2></div>
@@ -972,7 +972,7 @@ function updateAccountUI(){
  $('accountLoginCard').hidden=!!currentUser&&!passwordRecoveryMode;
  $('accountCreateCard').hidden=!!currentUser;
  $('authState').textContent=currentUser?'مسجل الدخول':'غير مسجل';
- $('accountUser').textContent=currentUser?(currentUser.email||'حساب نشط'):'—';
+ $('accountUser').textContent=currentUser?(currentUser.user_metadata?.username||currentUser.user_metadata?.display_name||currentUser.email||'حساب نشط'):'—';
  $('accountSync').textContent=!currentUser?'محلي فقط':cloudLoading?'جارٍ تحميل المساحة':cloudSaving?'جارٍ حفظ التعديلات':(cloudSavePending||cloudSaveTimer)?'في انتظار الحفظ':realtimeConnected?'متصل بالمزامنة المباشرة':'محفوظ سحابيًا';
  $('accountAI').textContent='مساعد ذكي عبر الخادم';
  if($('syncState')&&!cloudLoading&&!cloudSaving&&!currentUser)$('syncState').textContent='الحفظ على هذا الجهاز';
@@ -1251,32 +1251,44 @@ async function connectAuth(){
   setAuthMessage('الأدوات الأساسية تعمل بدون تسجيل. تعذر تهيئة خدمة الحساب: '+authInitError+' يمكنك إعادة المحاولة من زر تسجيل الدخول.',true);
  }
 }
+function normalizeAccountUsername(value){
+ const username=String(value||'').normalize('NFKC').trim().toLowerCase();
+ const length=[...username].length;
+ if(length<3||length>24||! /^[\p{L}\p{N}](?:[\p{L}\p{N}._-]{1,22}[\p{L}\p{N}])$/u.test(username)||/[._-]{2}/u.test(username)){
+  throw new Error('اسم المستخدم يجب أن يكون من 3 إلى 24 حرفًا أو رقمًا، ويمكن استخدام النقطة والشرطة والشرطة السفلية بينهما.');
+ }
+ return username;
+}
+async function usernameToAuthEmail(value){
+ const username=normalizeAccountUsername(value);
+ if(!window.crypto?.subtle)throw new Error('المتصفح لا يدعم إنشاء حساب باسم مستخدم. حدّث المتصفح وحاول مرة أخرى.');
+ const bytes=new TextEncoder().encode('entelaqtak.username.v1:'+username);
+ const digest=await window.crypto.subtle.digest('SHA-256',bytes);
+ const token=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('').slice(0,40);
+ // Synthetic, non-deliverable identifier used only because Supabase password auth requires email or phone.
+ return {username,email:'u'+token+'@accounts.entelaqtak.invalid'};
+}
 function authRedirectUrl(){return 'https://sasa-antilaqatuk.github.io/entelaqtak/workspace.html';}
 $('authSignIn').addEventListener('click',()=>withAuthButton('authSignIn',async()=>{
  if(!sbClient)throw new Error('خدمة الحساب لم تكتمل تهيئتها. حدّث الصفحة وحاول مرة أخرى.');
- const email=$('loginEmail').value.trim(),password=$('loginPassword').value;
- if(!email||!password)throw new Error('اكتب البريد الإلكتروني وكلمة المرور أولًا.');
+ const identifier=$('loginUsername').value.trim(),password=$('loginPassword').value;
+ if(!identifier||!password)throw new Error('اكتب اسم المستخدم وكلمة المرور أولًا.');
+ // Allow legacy email-based accounts to keep signing in during the transition.
+ const email=identifier.includes('@')?identifier:(await usernameToAuthEmail(identifier)).email;
  const {error}=await sbClient.auth.signInWithPassword({email,password});
  if(error)throw error;
  setAuthMessage('تم تسجيل الدخول. جارٍ تحميل مساحة عملك ومزامنتها.',false,'authSignInMessage');
 }));
 $('authSignUp').addEventListener('click',()=>withAuthButton('authSignUp',async()=>{
  if(!sbClient)throw new Error('خدمة الحساب لم تكتمل تهيئتها. حدّث الصفحة وحاول مرة أخرى.');
- const email=$('accountCreateEmail').value.trim(),password=$('accountCreatePassword').value,confirmPassword=$('accountCreatePasswordConfirm').value;
- if(!email||password.length<8)throw new Error('اكتب بريدًا صحيحًا وكلمة مرور لا تقل عن 8 أحرف.');
+ const username=$('accountCreateUsername').value,password=$('accountCreatePassword').value,confirmPassword=$('accountCreatePasswordConfirm').value;
+ if(password.length<8)throw new Error('كلمة المرور يجب ألا تقل عن 8 أحرف.');
  if(password!==confirmPassword)throw new Error('كلمتا المرور غير متطابقتين.');
- const {data,error}=await sbClient.auth.signUp({email,password,options:{emailRedirectTo:authRedirectUrl()}});
+ const account=await usernameToAuthEmail(username);
+ const {data,error}=await sbClient.auth.signUp({email:account.email,password,options:{data:{username:account.username,display_name:account.username}}});
  if(error)throw error;
- if(data.session)setAuthMessage('تم إنشاء الحساب وتسجيل الدخول. جارٍ تجهيز المزامنة.',false,'authSignUpMessage');
- else setAuthMessage('تم إرسال رسالة تأكيد إلى بريدك. افتح الرسالة ثم ارجع إلى الموقع لتسجيل الدخول.',false,'authSignUpMessage');
-}));
-$('authReset').addEventListener('click',()=>withAuthButton('authReset',async()=>{
- if(!sbClient)throw new Error('خدمة الحساب لم تكتمل تهيئتها. حدّث الصفحة وحاول مرة أخرى.');
- const email=$('loginEmail').value.trim();
- if(!email)throw new Error('اكتب بريدك الإلكتروني أولًا لإرسال رابط الاستعادة.');
- const {error}=await sbClient.auth.resetPasswordForEmail(email,{redirectTo:authRedirectUrl()});
- if(error)throw error;
- setAuthMessage('إذا كان البريد مسجلًا، فستصلك رسالة لاستعادة كلمة المرور. افحص صندوق الوارد والرسائل غير المرغوب فيها.',false,'authSignInMessage');
+ if(data.session)setAuthMessage('تم إنشاء حسابك بنجاح وتسجيل الدخول. جارٍ تجهيز مساحة عملك.',false,'authSignUpMessage');
+ else setAuthMessage('Supabase ما زال يطلب تأكيد البريد. يجب إيقاف خيار Confirm email في إعدادات Auth قبل إنشاء الحسابات بدون بريد.',true,'authSignUpMessage');
 }));
 $('authUpdatePassword').addEventListener('click',()=>withAuthButton('authUpdatePassword',async()=>{
  if(!sbClient)throw new Error('خدمة الحساب غير متاحة حاليًا.');
