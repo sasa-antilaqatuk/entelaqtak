@@ -97,6 +97,7 @@
     const snapshots=readSnapshots().sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
     return [
       {type:'production',title:'مشاريع الإنتاج',hint:'مشاريع البحث والسكريبت والمونتاج والنشر',items:(Array.isArray(state.productionProjects)?state.productionProjects:[]).filter(x=>x&&x.kind==='production_project').slice().sort((a,b)=>String(b.updatedAt||'').localeCompare(String(a.updatedAt||''))),empty:'أي مشروع تحفظه من استوديو الإنتاج هيظهر هنا تلقائيًا.'},
+      {type:'project-assets',title:'مرفقات المشاريع',hint:'الملفات والمراجع المرتبطة بكل مشروع إنتاج',items:(Array.isArray(state.productionProjects)?state.productionProjects:[]).filter(x=>x&&x.kind==='production_project').flatMap(project=>(Array.isArray(project.attachments)?project.attachments:[]).map(asset=>({...asset,id:String(project.id)+'::'+String(asset.id),attachmentId:String(asset.id),projectId:String(project.id),projectTitle:String(project.topic||'مشروع بدون عنوان')}))),empty:'ارفع ملفات من داخل أي مشروع أو اربط عنصرًا محفوظًا من مكتبتك.'},
       {type:'packs',title:'حزم المحتوى',hint:'السكريبت والعناوين والوصف وخطة اللقطات',items:Array.isArray(state.packs)?state.packs.slice().sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||''))):[],empty:'لسه مفيش حزم محفوظة. أنشئ حزمة من استوديو المحتوى واحفظها.'},
       {type:'ideas',title:'أفكار المحتوى',hint:'كل الأفكار التي حفظتها من مولّد الأفكار',items:Array.isArray(state.ideas)?state.ideas.slice().reverse():[],empty:'الأفكار التي تحفظها من مولّد الأفكار ستظهر هنا.'},
       {type:'templates',title:'قوالب السكريبت',hint:'مسوداتك الجاهزة لإعادة الاستخدام',items:Array.isArray(state.scriptTemplates)?state.scriptTemplates.slice().reverse():[],empty:'احفظ سكريبتًا كقالب من أداة كاتب السكريبت ليظهر هنا.'},
@@ -110,6 +111,7 @@
 
   function detailFor(type,item){
     if(type==='production')return [item.platform,item.duration,({brief:'المشروع',research:'البحث',script:'السكريبت',edit:'المونتاج',publish:'النشر'})[item.stage]||'المشروع'].filter(Boolean).join(' · ');
+    if(type==='project-assets')return [item.projectTitle,item.kind==='file'?(Math.max(1,Math.round((Number(item.size)||0)/1024))+' KB'):'عنصر مكتبة مرتبط'].filter(Boolean).join(' · ');
     if(type==='packs')return [item.platform,item.niche,item.createdAt?fmtDate(item.createdAt):''].filter(Boolean).join(' · ');
     if(type==='ideas')return [item.niche,item.platform,item.audience].filter(Boolean).join(' · ');
     if(type==='templates')return item.createdAt?fmtDate(item.createdAt):'قالب محفوظ';
@@ -123,6 +125,7 @@
 
   function titleFor(type,item){
     if(type==='production')return item.topic||'مشروع بدون عنوان';
+    if(type==='project-assets')return item.name||'مرفق مشروع';
     if(type==='packs')return item.topic||'حزمة بدون عنوان';
     if(type==='ideas')return item.title||'فكرة محفوظة';
     if(type==='templates')return item.name||'قالب سكريبت';
@@ -135,6 +138,7 @@
 
   function textFor(type,item){
     if(type==='production')return [item.script,item.researchText,item.editPlan,item.publishPack].filter(Boolean).join('\n\n').slice(0,260);
+    if(type==='project-assets')return item.kind==='file'?'ملف خاص محفوظ في التخزين السحابي · '+String(item.mime||''):String(item.text||'').slice(0,240);
     if(type==='packs')return [item.hook,item.script,item.description].filter(Boolean).join(' — ').slice(0,260);
     if(type==='ideas')return String(item.detail||item.angle||'').slice(0,240);
     if(type==='templates')return String(item.content||'').slice(0,240);
@@ -165,7 +169,7 @@
       return '<section class="library-group" data-library-group="'+esc(group.type)+'"><div class="library-group-head"><div><h2>'+esc(group.title)+'</h2><p>'+esc(group.hint)+'</p></div><span class="library-count">'+filtered.length+'</span></div>'+(filtered.length?'<div class="library-cards">'+filtered.map(item=>card(group.type,item)).join('')+'</div>':'<div class="library-empty">'+(searchTerm?'مفيش ملفات مطابقة للبحث داخل القسم ده.':esc(group.empty))+'</div>')+'</section>';
     }).join('');
     const productionCount=(Array.isArray(state.productionProjects)?state.productionProjects:[]).filter(x=>x&&x.kind==='production_project').length;
-    view.innerHTML='<div class="library-hero"><div><span class="eyebrow">YOUR LIBRARY · ALL FILES</span><h1>مكتبتي والملفات</h1><p>كل أفكارك وحزمك ومشاريع الإنتاج والقوالب ومواعيد النشر والنسخ الاحتياطية في مكان واحد. العناصر هنا للعرض والتنزيل والفتح؛ لا يتم حذف أي ملف تلقائيًا.</p></div><div class="library-hero-actions"><button class="primary" type="button" data-library-export-all>تصدير كل ملفاتي</button><button type="button" data-library-refresh>تحديث المكتبة</button></div></div><div class="library-stats"><div class="library-stat"><b>'+state.ideas.length+'</b><span>أفكار محفوظة</span></div><div class="library-stat"><b>'+state.packs.length+'</b><span>حزم محتوى</span></div><div class="library-stat"><b>'+productionCount+'</b><span>مشاريع إنتاج</span></div><div class="library-stat"><b>'+totals+'</b><span>عناصر وملفات متاحة</span></div></div><div class="library-toolbar"><input class="library-search" id="librarySearch" type="search" value="'+esc(searchTerm)+'" placeholder="ابحث باسم المشروع أو الفكرة أو الملف..." aria-label="ابحث في مكتبتي"><div class="library-filters"><button class="library-filter '+(activeFilter==='all'?'active':'')+'" type="button" data-library-filter="all">الكل</button><button class="library-filter '+(activeFilter==='production'?'active':'')+'" type="button" data-library-filter="production">مشاريع الإنتاج</button><button class="library-filter '+(activeFilter==='packs'?'active':'')+'" type="button" data-library-filter="packs">الحزم</button><button class="library-filter '+(activeFilter==='ideas'?'active':'')+'" type="button" data-library-filter="ideas">الأفكار</button><button class="library-filter '+(activeFilter==='templates'?'active':'')+'" type="button" data-library-filter="templates">القوالب</button><button class="library-filter '+(activeFilter==='thumbnail-file'?'active':'')+'" type="button" data-library-filter="thumbnail-file">الصور</button><button class="library-filter '+(activeFilter==='backups'?'active':'')+'" type="button" data-library-filter="backups">النسخ الاحتياطية</button></div></div><div class="library-groups">'+groups+'</div><p class="library-note">المشاريع والحزم والأفكار والقوالب ومواعيد النشر محفوظة مع مساحة العمل. ملف الصورة الأصلي يُحفظ محليًا على نفس المتصفح والجهاز؛ لا يتم رفعه إلى خادم الموقع.</p>';
+    view.innerHTML='<div class="library-hero"><div><span class="eyebrow">YOUR LIBRARY · ALL FILES</span><h1>مكتبتي والملفات</h1><p>كل أفكارك وحزمك ومشاريع الإنتاج والقوالب ومواعيد النشر والنسخ الاحتياطية في مكان واحد. العناصر هنا للعرض والتنزيل والفتح؛ لا يتم حذف أي ملف تلقائيًا.</p></div><div class="library-hero-actions"><button class="primary" type="button" data-library-export-all>تصدير كل ملفاتي</button><button type="button" data-library-refresh>تحديث المكتبة</button></div></div><div class="library-stats"><div class="library-stat"><b>'+state.ideas.length+'</b><span>أفكار محفوظة</span></div><div class="library-stat"><b>'+state.packs.length+'</b><span>حزم محتوى</span></div><div class="library-stat"><b>'+productionCount+'</b><span>مشاريع إنتاج</span></div><div class="library-stat"><b>'+totals+'</b><span>عناصر وملفات متاحة</span></div></div><div class="library-toolbar"><input class="library-search" id="librarySearch" type="search" value="'+esc(searchTerm)+'" placeholder="ابحث باسم المشروع أو الفكرة أو الملف..." aria-label="ابحث في مكتبتي"><div class="library-filters"><button class="library-filter '+(activeFilter==='all'?'active':'')+'" type="button" data-library-filter="all">الكل</button><button class="library-filter '+(activeFilter==='production'?'active':'')+'" type="button" data-library-filter="production">مشاريع الإنتاج</button><button class="library-filter '+(activeFilter==='project-assets'?'active':'')+'" type="button" data-library-filter="project-assets">مرفقات المشاريع</button><button class="library-filter '+(activeFilter==='packs'?'active':'')+'" type="button" data-library-filter="packs">الحزم</button><button class="library-filter '+(activeFilter==='ideas'?'active':'')+'" type="button" data-library-filter="ideas">الأفكار</button><button class="library-filter '+(activeFilter==='templates'?'active':'')+'" type="button" data-library-filter="templates">القوالب</button><button class="library-filter '+(activeFilter==='thumbnail-file'?'active':'')+'" type="button" data-library-filter="thumbnail-file">الصور</button><button class="library-filter '+(activeFilter==='backups'?'active':'')+'" type="button" data-library-filter="backups">النسخ الاحتياطية</button></div></div><div class="library-groups">'+groups+'</div><p class="library-note">المشاريع والحزم والأفكار والقوالب ومواعيد النشر محفوظة مع مساحة العمل. الملفات المرفوعة من المشاريع تُحفظ في مساحة خاصة بالحساب، والصورة الأصلية لمصمم الصور يمكن رفعها إلى المشروع من داخله.</p>';
   }
 
   function exportItem(type,id){
@@ -173,6 +177,16 @@
     const group=groups.find(x=>x.type===type);
     const item=group?.items.find(x=>String(x.id??'')===String(id)) || group?.items[0];
     if(!item)return app.toast('العنصر لم يعد موجودًا في المكتبة.');
+    if(type==='project-assets'){
+      if(item.kind==='file'){
+        const task=window.EntelaqtakProjectAssets?.downloadAttachment?.(item.projectId,item.attachmentId);
+        if(task&&typeof task.catch==='function')task.catch(error=>app.toast(error?.message||'تعذر تنزيل الملف.'));
+        else app.toast('افتح المشروع لتنزيل الملف.');
+        return;
+      }
+      download('entelaqtak-'+safeFile(titleFor(type,item))+'.txt',String(item.text||''),'text/plain;charset=utf-8');
+      return;
+    }
     if(type==='thumbnail-file'){
       if(window.EntelaqtakThumbnailFiles?.downloadSource){window.EntelaqtakThumbnailFiles.downloadSource();return;}
       return app.toast('ملف الصورة غير متاح في هذا المتصفح.');
@@ -186,6 +200,11 @@
     const group=groups.find(x=>x.type===type);
     const item=group?.items.find(x=>String(x.id??'')===String(id)) || group?.items[0];
     if(!item)return app.toast('العنصر غير موجود حاليًا.');
+    if(type==='project-assets'){
+      const opened=app.openProductionProject?.(String(item.projectId));
+      if(!opened){app.toast('تعذر فتح المشروع المرتبط بالمرفق.');return;}
+      app.go('production');return;
+    }
     if(type==='production'){
       const opened=app.openProductionProject?.(String(item.id));
       if(!opened){app.toast('تعذر فتح المشروع مباشرة. افتح استوديو الإنتاج ثم اختره من قائمة المشاريع.');app.go('production');return;}
