@@ -126,6 +126,7 @@
       const copy = JSON.parse(JSON.stringify(p));
       copy.id = 'prod-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,8);
       copy.topic = (p.topic || 'مشروع') + ' — نسخة';
+      copy.attachments = (Array.isArray(p.attachments) ? p.attachments : []).filter(item => item && item.kind === 'library').map(item => ({...item,id:'asset-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,8)}));
       copy.createdAt = new Date().toISOString();
       copy.updatedAt = copy.createdAt;
       app.getState().productionProjects.unshift(copy);
@@ -133,7 +134,7 @@
       try { localStorage.setItem('entelaqtak-active-production-v1', copy.id); } catch (_) {}
       const nav = $('[data-view="production"]');
       nav?.click();
-      app.toast('اتعملت نسخة مستقلة من المشروع بكل محتوياته.');
+      app.toast('اتعملت نسخة مستقلة. مرفقات الملفات الأصلية لم تُنسخ لتجنب تكرار التخزين.');
     }
   });
   window.addEventListener('pagehide', () => {
