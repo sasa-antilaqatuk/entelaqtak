@@ -1,0 +1,72 @@
+/* Entelaqtak Projects Hub — responsive navy/blue workspace module */
+#view-projects{--ph-line:#293b59;--ph-muted:#9eacc2;--ph-panel:#111b30;--ph-panel2:#17243d;color:var(--text,#f3f7ff)}
+#view-projects .ph-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin:4px 0 22px}
+#view-projects .ph-kicker{display:block;color:#8fc9ff;font-size:9px;font-weight:900;letter-spacing:.8px}
+#view-projects .ph-head h1{font-size:clamp(24px,3vw,34px);margin:7px 0 5px;line-height:1.35}
+#view-projects .ph-head h1 span{color:#60a5fa}
+#view-projects .ph-head p{font-size:12px;color:var(--ph-muted);margin:0;line-height:1.8}
+#view-projects .ph-head-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#view-projects .ph-head-actions a,#view-projects .ph-new-top{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--ph-line);background:#111b30;color:#dcecff;border-radius:10px;padding:10px 12px;text-decoration:none;font:700 10px Tahoma,Arial,sans-serif}
+#view-projects .ph-new-top{background:linear-gradient(120deg,#2563eb,#38bdf8);border:0;color:#081323;cursor:pointer}
+#view-projects .ph-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:17px}
+#view-projects .ph-stat{border:1px solid var(--ph-line);border-radius:14px;padding:14px;background:linear-gradient(145deg,#17243d,#10192c);min-width:0}
+#view-projects .ph-stat span{display:block;color:#b7c5da;font-size:10px}
+#view-projects .ph-stat strong{display:block;font-size:26px;line-height:1.25;margin:7px 0 2px}
+#view-projects .ph-stat small{font-size:9px;color:#8498b5}
+#view-projects .ph-main-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(260px,.7fr);gap:14px;align-items:start}
+#view-projects .ph-library,#view-projects .ph-create-panel{border:1px solid var(--ph-line);border-radius:17px;background:linear-gradient(145deg,#111b30,#0d1729);padding:17px;min-width:0}
+#view-projects .ph-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:13px}
+#view-projects .ph-section-head h2,#view-projects .ph-create-panel h2{font-size:16px;margin:4px 0}
+#view-projects .ph-section-head p,#view-projects .ph-create-panel>p{color:var(--ph-muted);font-size:10px;margin:0;line-height:1.8}
+#view-projects .ph-count{font-size:9px;color:#b9cde7;border:1px solid var(--ph-line);border-radius:30px;padding:6px 9px;white-space:nowrap}
+#view-projects .ph-toolbar{display:flex;align-items:center;justify-content:space-between;gap:9px;flex-wrap:wrap;margin:13px 0 15px}
+#view-projects .ph-search{display:flex;align-items:center;gap:7px;flex:1 1 220px;min-width:0;border:1px solid #344968;border-radius:10px;background:#091426;padding:0 10px;color:#93c5fd}
+#view-projects .ph-search input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:#f3f7ff;padding:10px 0;font:11px Tahoma,Arial,sans-serif}
+#view-projects .ph-filters{display:flex;gap:5px;flex-wrap:wrap}
+#view-projects .ph-filters button{border:1px solid var(--ph-line);border-radius:30px;background:#101a2d;color:#aebdd3;padding:7px 9px;font:9px Tahoma,Arial,sans-serif;cursor:pointer}
+#view-projects .ph-filters button.is-active{color:#eaf5ff;border-color:#3b82f6;background:#2563eb2c}
+#view-projects .ph-project-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#view-projects .ph-project-card{border:1px solid #2b3d5b;border-radius:14px;padding:13px;background:linear-gradient(145deg,#17243b,#10192c);min-width:0}
+#view-projects .ph-project-card[hidden],#view-projects [hidden]{display:none!important}
+#view-projects .ph-card-top{display:flex;align-items:center;gap:8px}
+#view-projects .ph-card-icon{width:31px;height:31px;border-radius:10px;background:#2563eb24;display:grid;place-items:center}
+#view-projects .ph-card-stage{margin-right:auto;font-size:9px;color:#a7d5ff;border:1px solid #2563eb55;border-radius:30px;padding:4px 8px}
+#view-projects .ph-card-menu{border:0;background:transparent;color:#9fb4d1;font-size:19px;cursor:pointer}
+#view-projects .ph-project-card h3{font-size:13px;line-height:1.6;margin:10px 0 3px;overflow-wrap:anywhere}
+#view-projects .ph-card-meta{font-size:9px;color:var(--ph-muted);margin:0 0 13px}
+#view-projects .ph-card-meta span{padding:0 4px;color:#5a7ca8}
+#view-projects .ph-progress-head{display:flex;justify-content:space-between;font-size:9px;color:#aabbd2;margin-bottom:6px}
+#view-projects .ph-progress-head strong{color:#dbeafe}
+#view-projects .ph-progress{height:6px;background:#243552;border-radius:20px;overflow:hidden}
+#view-projects .ph-progress span{height:100%;display:block;border-radius:20px;background:linear-gradient(90deg,#2563eb,#38bdf8)}
+#view-projects .ph-card-stats{display:flex;gap:9px;flex-wrap:wrap;margin:11px 0;color:#8092ac;font-size:8px}
+#view-projects .ph-card-stats .is-done{color:#77dfbf}
+#view-projects .ph-card-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:10px;border-top:1px solid #2a3a54;color:#8397b3;font-size:8px}
+#view-projects .ph-open-btn{border:0;background:transparent;color:#92c9ff;font-size:10px;font-weight:bold;cursor:pointer;white-space:nowrap}
+#view-projects .ph-stage-actions{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin-top:11px}
+#view-projects .ph-stage-actions button{border:1px solid #293d5d;border-radius:7px;background:#0d182a;color:#91a5c1;padding:6px 2px;font:8px Tahoma,Arial,sans-serif;cursor:pointer}
+#view-projects .ph-stage-actions button.is-current{border-color:#3b82f6;background:#2563eb25;color:#e6f4ff}
+#view-projects .ph-card-tools{display:flex;justify-content:flex-end;gap:12px;margin-top:8px}
+#view-projects .ph-card-tools button{border:0;background:transparent;color:#92bde9;font:8px Tahoma,Arial,sans-serif;cursor:pointer}
+#view-projects .ph-card-tools button.is-danger{color:#f49ba8}
+#view-projects .ph-empty{grid-column:1/-1;text-align:center;border:1px dashed #3b4f70;border-radius:14px;padding:28px 15px;color:#aabbd2}
+#view-projects .ph-empty>span{font-size:28px;color:#60a5fa}
+#view-projects .ph-empty h3{color:#eff6ff;font-size:15px;margin:5px}
+#view-projects .ph-empty p{font-size:10px;line-height:1.8}
+#view-projects .ph-empty button{background:linear-gradient(120deg,#2563eb,#38bdf8);border:0;border-radius:9px;padding:9px 13px;color:#071323;font-weight:bold;font-size:10px;cursor:pointer}
+#view-projects .ph-no-results{grid-column:1/-1;padding:20px;text-align:center;color:#9eb1ca;font-size:10px}
+#view-projects .ph-create-panel{position:sticky;top:18px;background:radial-gradient(260px 170px at 90% 0,#2563eb26,transparent 75%),linear-gradient(145deg,#17243d,#10192c)}
+#view-projects .ph-create-icon{width:38px;height:38px;border-radius:12px;background:#2563eb2b;color:#93c5fd;display:grid;place-items:center;font-size:20px;margin-bottom:12px}
+#view-projects .ph-create-panel form{display:grid;gap:10px;margin-top:14px}
+#view-projects .ph-create-panel label{display:grid;gap:5px;color:#c1d0e4;font-size:9px}
+#view-projects .ph-create-panel input,#view-projects .ph-create-panel select{width:100%;min-width:0;border:1px solid #344968;border-radius:9px;background:#091426;color:#f1f5fb;padding:9px;font:10px Tahoma,Arial,sans-serif;outline:0}
+#view-projects .ph-create-panel input:focus,#view-projects .ph-create-panel select:focus{border-color:#60a5fa;box-shadow:0 0 0 3px #2563eb24}
+#view-projects .ph-create-submit{border:0;border-radius:10px;background:linear-gradient(120deg,#2563eb,#38bdf8);color:#061426;font:700 10px Tahoma,Arial,sans-serif;padding:11px;cursor:pointer;margin-top:2px}
+#view-projects .ph-create-submit span{float:left}
+#view-projects .ph-cloud-note{display:flex;gap:9px;align-items:flex-start;border-top:1px solid #2b3d5b;margin-top:13px;padding-top:12px;color:#93c5fd}
+#view-projects .ph-cloud-note b,.ph-cloud-note small{display:block}
+#view-projects .ph-cloud-note b{font-size:9px;color:#dbeafe}
+#view-projects .ph-cloud-note small{font-size:8px;color:#8fa3be;line-height:1.8;margin-top:3px}
+@media(max-width:1050px){#view-projects .ph-main-grid{grid-template-columns:1fr}#view-projects .ph-create-panel{position:static}}
+@media(max-width:760px){#view-projects .ph-head{align-items:flex-start;flex-direction:column}#view-projects .ph-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#view-projects .ph-library,#view-projects .ph-create-panel{padding:12px}#view-projects .ph-project-grid{grid-template-columns:1fr}#view-projects .ph-toolbar{align-items:stretch;flex-direction:column}#view-projects .ph-search{flex-basis:auto}#view-projects .ph-stage-actions button{font-size:8px;padding:7px 1px}}
+@media(max-width:380px){#view-projects .ph-filters{display:grid;grid-template-columns:repeat(2,1fr)}#view-projects .ph-stage-actions{gap:3px}#view-projects .ph-stage-actions button{font-size:7px}}
