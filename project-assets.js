@@ -173,7 +173,7 @@
     }
     panel.outerHTML = panelMarkup(project);
     const newPanel = document.getElementById('projectAssetsPanel');
-    if (newPanel) newPanel.scrollIntoView({block:'nearest',behavior:'instant'});
+    if (newPanel) newPanel.dataset.projectId = String(project.id);
   }
 
   function setStatus(message, isError=false) {
@@ -195,6 +195,7 @@
 
   async function uploadOne(project, file, extra={}) {
     const {user,supabase} = requireStorageAccess();
+    if (extra.sourceType === 'thumbnail-source' && ensureAttachments(project).some(item => item.kind === 'file' && item.sourceType === 'thumbnail-source')) throw new Error('الصورة الأصلية لمصمم الصور مرتبطة بالمشروع بالفعل.');
     if (!file || !file.size) throw new Error('الملف فارغ أو غير صالح.');
     if (file.size > MAX_BYTES) throw new Error('الملف "' + file.name + '" أكبر من الحد المسموح (25 MB).');
     const mime = mimeFromFile(file);
@@ -375,7 +376,7 @@
       sourceType:source.sourceType,
       sourceId:source.sourceId,
       name:source.name.slice(0,180),
-      text:source.text.slice(0,40000),
+      text:source.text.slice(0,12000),
       mime:'text/plain',
       size:source.text.length,
       createdAt:new Date().toISOString()
