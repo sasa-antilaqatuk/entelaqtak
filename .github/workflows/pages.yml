@@ -149,7 +149,7 @@ jobs:
           assert(projectAssistant.includes("app.callAI('project_assistant'") && projectAssistant.includes('aiConversation'), 'Project Assistant chat or per-project history is missing.');
           assert(projectAssistant.includes('applyProposal') && projectAssistant.includes('undoProposal') && projectAssistant.includes('aiFieldHistory'), 'Project Assistant approval, backup or undo controls are missing.');
           assert(projectAssistant.includes('FIELD_RULES') && projectAssistant.includes('data-paa-apply') && projectAssistant.includes('data-paa-undo'), 'Project Assistant field allowlist or confirmation buttons are missing.');
-          assert(aiAssistant.includes('projectProposalLimits') && aiAssistant.includes('proposal: candidate.content'), 'Project Assistant server-side proposal validation is missing.');
+          assert(aiAssistant.includes('projectProposalLimits') && aiAssistant.includes('proposal = {') && aiAssistant.includes('content,'), 'Project Assistant server-side proposal validation is missing.');
           assert(projectAssets.includes('readTextAttachment') && projectAssistant.includes('readTextAttachment'), 'Project Assistant text attachment context is unavailable.');
           assert(aiAssistant.includes('"project_assistant"') && aiAssistant.includes('project_assistant:'), 'Project Assistant Edge Function tool is missing.');
           assert(projectAssistantCss.includes('#projectAssistantPanel') && worker.includes("'./project-assistant.js'") && worker.includes("'./project-assistant.css'"), 'Project Assistant styles or offline assets are missing.');
