@@ -439,7 +439,7 @@ function downloadThumbSource(){
   setTimeout(()=>URL.revokeObjectURL(url),1500);
  }).catch(()=>notify('تعذر الوصول إلى ملف الصورة.'));
 }
-window.EntelaqtakThumbnailFiles={getMeta:getThumbSourceMeta,downloadSource:downloadThumbSource,hasSavedSource:()=>!!getThumbSourceMeta()};
+window.EntelaqtakThumbnailFiles={getMeta:getThumbSourceMeta,downloadSource:downloadThumbSource,hasSavedSource:()=>!!getThumbSourceMeta(),getSourceBlob:async()=>{const record=await getThumbSource();return record?.blob?{blob:record.blob,name:String(record.name||'thumbnail-source.jpg'),type:String(record.type||record.blob.type||'image/jpeg'),size:Number(record.size)||record.blob.size||0}:null;}};
 let thumbImage=null,thumbObjectUrl=null,thumbHistory=[],thumbHistoryIndex=-1,thumbHistoryTimer=null,thumbDrag=null;
 const thumbControlIds=['thumbTitle','thumbSubtitle','thumbBadge','thumbBrand','thumbFont','thumbAlign','thumbFontSize','thumbTextColor','thumbOutlineColor','thumbOutline','thumbTitleY','thumbBadgeColor','thumbSticker','thumbFit','thumbZoom','thumbImageX','thumbImageY','thumbBrightness','thumbBgStyle','thumbDecor','thumbAccent','thumbOverlay'];
 function thumbState(){
