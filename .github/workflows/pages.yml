@@ -104,7 +104,18 @@ jobs:
             const count = platformHub.split(needle).length - 1;
             assert(count === 1, 'Expected exactly one click handler for ' + id + ', found ' + count);
           }
-          assert(worker.includes("entelaqtak-shell-v77"), 'Service worker cache version was not bumped.');
+          assert(worker.includes("entelaqtak-shell-v78"), 'Service worker cache version was not bumped.');
+          assert(!worker.includes("ignoreSearch:true") && !worker.includes("ignoreSearch: true") && worker.includes("caches.match(request)"), 'Service worker must preserve versioned asset URLs in cache lookups.');
+          const visitor = fs.readFileSync('visitor-tracker.js', 'utf8');
+          const signup = fs.readFileSync('supabase/functions/username-signup/index.ts', 'utf8');
+          const heartbeat = fs.readFileSync('supabase/functions/visitor-heartbeat/index.ts', 'utf8');
+          const config = fs.readFileSync('supabase/config.toml', 'utf8');
+          const admin = fs.readFileSync('admin.html', 'utf8');
+          assert(workspace.includes('/functions/v1/username-signup') && signup.includes('/auth/v1/admin/users') && signup.includes('email_confirm: true'), 'Username-only signup must be created securely on the server.');
+          assert(visitor.includes('/functions/v1/visitor-heartbeat') && !visitor.includes("client.rpc('heartbeat_visitor_session'"), 'Visitor tracking must use the protected heartbeat endpoint.');
+          assert(heartbeat.includes('/auth/v1/user') && heartbeat.includes('/rest/v1/rpc/heartbeat_visitor_session'), 'Heartbeat must verify account sessions before storing analytics.');
+          assert(admin.includes("from('site_admins')") && !admin.includes("rpc('is_site_admin')"), 'Admin access must use the RLS-protected allowlist query.');
+          assert(config.includes('[functions.username-signup]') && config.includes('[functions.visitor-heartbeat]'), 'New Edge Function settings are missing.');
           assert(organizer.includes('nav-organized-desktop') && organizer.includes('setDrawerState') && organizer.includes('getDrawerFocusables'), 'Accessible grouped sidebar and drawer focus handling are missing.');
           assert(organizer.includes("max-width: 1100px") && organizer.includes("aria-hidden"), 'Responsive sidebar drawer breakpoint or accessibility state is missing.');
           const responsive = fs.readFileSync('responsive-system.css', 'utf8');
@@ -142,11 +153,11 @@ jobs:
           from pathlib import Path
           errors = []
           versions = {
-              "index.html": "20261120-organized-dark-1",
-              "workspace.html": "20261120-organized-dark-1",
-              "admin.html": "20261120-organized-dark-1",
-              "advertise.html": "20261120-organized-dark-1",
-              "legal.html": "20261120-organized-dark-1",
+              "index.html": "20261125-blue-unified-1",
+              "workspace.html": "20261125-blue-unified-1",
+              "admin.html": "20261125-blue-unified-1",
+              "advertise.html": "20261125-blue-unified-1",
+              "legal.html": "20261125-blue-unified-1",
           }
           for page, version in versions.items():
               html = Path(page).read_text(encoding="utf-8")
@@ -192,7 +203,7 @@ jobs:
           if "unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js" not in admin:
               errors.append("admin.html: Supabase CDN fallback is missing")
           worker = Path("service-worker.js").read_text(encoding="utf-8")
-          if "entelaqtak-shell-v77" not in worker:
+          if "entelaqtak-shell-v78" not in worker:
               errors.append("service-worker.js: shell cache version was not bumped")
           if "'./sidebar-system.css'" not in worker:
               errors.append("service-worker.js: new sidebar stylesheet missing from offline cache")
@@ -217,8 +228,10 @@ jobs:
           for token in button_rules:
               if token not in buttons:
                   errors.append("button-system.css: missing button rule " + token)
-          if "ignoreSearch:true" not in worker:
-              errors.append("service-worker.js: versioned assets are not matched to the current offline cache")
+          if "ignoreSearch:true" in worker or "ignoreSearch: true" in worker:
+              errors.append("service-worker.js: versioned assets must use exact cache keys")
+          if "caches.match(request)" not in worker:
+              errors.append("service-worker.js: exact request cache lookup is missing")
           workspace = Path("workspace.html").read_text(encoding="utf-8")
           if "أزرق ملكي" not in workspace or "ثيم أزرق ملكي مفعّل" not in workspace:
               errors.append("workspace.html: theme preset labels are not aligned with the blue palette")

@@ -1,5 +1,6 @@
-/* Entelaqtak visitor analytics: pseudonymous sessions with a per-browser secret. */
+/* Entelaqtak visitor analytics: pseudonymous sessions sent through a protected Edge Function. */
 (() => {
+  'use strict';
   const cfg = window.ENTELAQTAK_CONFIG;
   if (!cfg?.url || !cfg?.publishableKey) return;
 
@@ -8,7 +9,13 @@
     window.__entelaqtakVisitorTrackerStarted = true;
 
     const client = window.supabase.createClient(cfg.url, cfg.publishableKey, {
-      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+        storage: window.localStorage,
+        storageKey: 'sb-dbetanrnhdabuachxdhc-auth-token'
+      }
     });
     const ID_KEY = 'entelaqtak-visitor-session-v2';
     const TOKEN_KEY = 'entelaqtak-visitor-secret-v2';
@@ -18,7 +25,8 @@
       return Array.from(data, b => b.toString(16).padStart(2, '0')).join('');
     };
 
-    let sessionId, sessionToken;
+    let sessionId;
+    let sessionToken;
     try {
       sessionId = localStorage.getItem(ID_KEY);
       sessionToken = localStorage.getItem(TOKEN_KEY);
@@ -35,25 +43,38 @@
 
     let closed = false;
     let inFlight = false;
+    const baseUrl = String(cfg.url).replace(/\/$/, '');
     const page = () => (location.pathname + location.search).slice(0, 500);
 
     async function heartbeat(ended = false) {
       if ((closed && !ended) || inFlight) return;
       inFlight = true;
       try {
-        const { data: authData } = await client.auth.getSession();
-        const user = authData?.session?.user || null;
-        const { error } = await client.rpc('heartbeat_visitor_session', {
-          p_session_id: sessionId,
-          p_session_token: sessionToken,
-          p_user_id: user?.id || null,
-          p_visitor_email: user?.email || null,
-          p_page_path: page(),
-          p_user_agent: (navigator.userAgent || '').slice(0, 500),
-          p_referrer: (document.referrer || '').slice(0, 1000),
-          p_ended: Boolean(ended)
+        const { data: authData, error: authError } = await client.auth.getSession();
+        if (authError) throw authError;
+        const accessToken = authData?.session?.access_token;
+        const headers = {
+          'Content-Type': 'application/json',
+          apikey: cfg.publishableKey
+        };
+        if (accessToken) headers.Authorization = 'Bearer ' + accessToken;
+
+        const response = await fetch(baseUrl + '/functions/v1/visitor-heartbeat', {
+          method: 'POST',
+          headers,
+          cache: 'no-store',
+          credentials: 'omit',
+          keepalive: Boolean(ended),
+          body: JSON.stringify({
+            sessionId,
+            sessionToken,
+            pagePath: page(),
+            userAgent: (navigator.userAgent || '').slice(0, 500),
+            referrer: (document.referrer || '').slice(0, 1000),
+            ended: Boolean(ended)
+          })
         });
-        if (error) throw error;
+        if (!response.ok) throw new Error('Visitor heartbeat failed: ' + response.status);
       } catch (_) {
         // Analytics failures must never interrupt the workspace.
       } finally {
@@ -76,7 +97,8 @@
   if (window.supabase?.createClient) start();
   else {
     const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+    script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js';
+    script.onerror = () => { script.src = 'https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js'; };
     script.onload = start;
     script.async = true;
     document.head.appendChild(script);

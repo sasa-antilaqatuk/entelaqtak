@@ -12,13 +12,13 @@
 <style>
 :root{color-scheme:dark;--bg:#0B1120;--panel:#151d33;--line:#303d5b;--text:#f4f5ff;--muted:#a5aec8;--accent:#3B82F6;--mint:#3B82F6}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(850px 420px at 84% -12%,#35c8a724,transparent 65%),var(--bg);color:var(--text);font:16px/1.9 Tahoma,Arial,sans-serif}
-main{width:min(900px,calc(100% - 28px));margin:35px auto 60px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}.brand{font-weight:bold;font-size:18px}.back{color:#d8d3ff;text-decoration:none;border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:13px}
+main{width:min(900px,calc(100% - 28px));margin:35px auto 60px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}.brand{font-weight:bold;font-size:18px}.back{color:#DBEAFE;text-decoration:none;border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:13px}
 header,.section{background:linear-gradient(145deg,#202944,#151d33);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:14px}
-.eyebrow{color:#BFDBFE;font-weight:bold;font-size:12px}h1{font-size:clamp(25px,5vw,38px);line-height:1.35;margin:7px 0}h2{font-size:20px;margin:0 0 10px;color:#d9d4ff}h3{font-size:16px;margin:16px 0 5px}p,li{color:#c6cfe0;font-size:14px}ul{padding-inline-start:22px}a{color:#89dfd1}.notice{padding:12px;border:1px solid #3B82F655;border-radius:11px;background:#3B82F60c;color:#bceee5;font-size:13px}
+.eyebrow{color:#BFDBFE;font-weight:bold;font-size:12px}h1{font-size:clamp(25px,5vw,38px);line-height:1.35;margin:7px 0}h2{font-size:20px;margin:0 0 10px;color:#DBEAFE}h3{font-size:16px;margin:16px 0 5px}p,li{color:#c6cfe0;font-size:14px}ul{padding-inline-start:22px}a{color:#89dfd1}.notice{padding:12px;border:1px solid #3B82F655;border-radius:11px;background:#3B82F60c;color:#bceee5;font-size:13px}
 small,.muted{color:var(--muted);font-size:12px}.footer{color:var(--muted);font-size:12px;text-align:center;margin-top:20px}
 @media(max-width:600px){main{margin-top:15px}.top{align-items:flex-start;flex-direction:column}header,.section{padding:16px}p,li{font-size:13px}}
 </style>
- <link rel="stylesheet" href="./design-system.css?v=20261120-organized-dark-1">
+ <link rel="stylesheet" href="./design-system.css?v=20261125-blue-unified-1">
 <script>try{if(localStorage.getItem("entelaqtak-language-v1")==="en"){document.documentElement.lang="en";document.documentElement.dir="ltr";}}catch(e){}</script>
  <link rel="stylesheet" href="./button-system.css?v=20261120-buttons-1">
 </head>
@@ -36,12 +36,12 @@ small,.muted{color:var(--muted);font-size:12px}.footer{color:var(--muted);font-s
     <h3>1. البيانات المحفوظة على جهازك</h3>
     <p>الأفكار والحزم والمنشورات وسجلات الأداء وبعض إعدادات العمل تُحفظ محليًا في مساحة تخزين المتصفح (localStorage). لا تُرسل هذه البيانات تلقائيًا لمجرد فتح الصفحة. حذف بيانات المتصفح أو تغيير الجهاز قد يؤدي إلى فقدان البيانات المحلية؛ لذلك وفّر الموقع تصدير نسخة احتياطية بصيغة JSON.</p>
     <h3>2. الحساب والمزامنة السحابية</h3>
-    <p>تسجيل الحساب اختياري. عند تسجيل الدخول واستخدام ميزة مساحة العمل السحابية، تُخزّن بيانات مساحة العمل في خدمة Supabase المرتبطة بالمشروع، وتُربط بمعرّف الحساب. تطبق قاعدة البيانات سياسات وصول تقصر قراءة وتعديل مساحة العمل على مالكها المسجل.</p>
+    <p>تسجيل الحساب اختياري. يمكنك إنشاء حساب باسم مستخدم وكلمة مرور دون بريد إلكتروني؛ يستخدم النظام داخليًا معرّفًا اصطناعيًا غير قابل لاستقبال الرسائل لتمكين تسجيل الدخول، وليس بريدًا فعليًا للتواصل أو استرداد كلمة المرور. عند تسجيل الدخول واستخدام ميزة مساحة العمل السحابية، تُخزّن بيانات مساحة العمل في خدمة Supabase وتُربط بمعرّف الحساب. تطبق قاعدة البيانات سياسات وصول تقصر قراءة وتعديل مساحة العمل على مالكها المسجل. يمكن تغيير كلمة المرور من داخل الحساب بعد تسجيل الدخول.</p>
     <h3>3. طلبات الذكاء الاصطناعي</h3>
     <p>عند اختيار إحدى أدوات الذكاء الاصطناعي، يُرسل النص والاختيارات التي أدخلتها لتلك الأداة إلى وظيفة خادمية في Supabase، ثم إلى واجهة OpenAI API لتوليد الرد. يُحتفظ بمفتاح مزود الذكاء الاصطناعي على الخادم ولا يُطلب منك إدخاله داخل الصفحة. لا ترسل كلمات مرور أو بيانات شخصية أو معلومات سرية لا تحتاجها الأداة.</p>
     <p>تخضع معالجة الطلب بعد إرساله لشروط وسياسات مزودي الخدمة. لا تقدم هذه الصفحة تعهدًا بمدة احتفاظ محددة لدى مزودي الخدمة؛ راجع سياساتهم وإعدادات حساب المشروع قبل استخدام بيانات حساسة.</p>
     <h3>4. تحليلات استخدام الموقع</h3>
-    <p>يسجل الموقع جلسات استخدام لأغراض التشغيل وتحسين الخدمة، وتشمل معرّف جلسة عشوائيًا، والصفحة التي تمت زيارتها، وأوقات النشاط، ومعلومات المتصفح/نظام التشغيل، ومصدر الإحالة عند توفره. إذا كنت مسجل الدخول فقد يرتبط سجل الجلسة ببريد حسابك. لا يُحفظ عنوان IP الخام في سجل جلسات الزوار.</p>
+    <p>يسجل الموقع جلسات استخدام لأغراض التشغيل وتحسين الخدمة عبر وظيفة خادمية محمية. تشمل البيانات معرّف جلسة عشوائيًا، والصفحة التي تمت زيارتها، وأوقات النشاط، ومعلومات المتصفح/نظام التشغيل، ومصدر الإحالة عند توفره. إذا كنت مسجل الدخول بحساب بريد إلكتروني فعلي فقد يرتبط سجل الجلسة بهذا البريد؛ أما حسابات اسم المستخدم فقط فيُستخدم معرّف الحساب دون تخزين البريد الاصطناعي. لا يُحفظ عنوان IP الخام في سجل جلسات الزوار، ويُستخدم معرّف HMAC مؤقتًا لحماية معدل الطلبات.</p>
     <p>لمنع إساءة استخدام أدوات الذكاء الاصطناعي، يعالج الخادم عنوان الشبكة مؤقتًا ويحوّل عنوان الشبكة أو معرّف الحساب إلى معرّف HMAC مشفّر لاستخدامه في حدود الطلبات؛ تُحفظ قيمة المعرف المشتق في مخزن خاص ولا يُحفظ عنوان IP الخام فيه.</p>
     <h3>5. البحث والتحقق بالمصادر</h3>
     <p>عند استخدام رادار الموضوعات أو مدقق الحقائق، يُرسل موضوع البحث أو الادعاء والمنطقة المحددة إلى خدمة الذكاء الاصطناعي مع تفعيل البحث على الويب. قد تُعرض روابط المصادر التي استخدمتها الخدمة. لا تمثل هذه النتائج قياسًا رسميًا لحجم البحث أو ترتيب الترند ما لم يذكر المصدر ذلك صراحة.</p>

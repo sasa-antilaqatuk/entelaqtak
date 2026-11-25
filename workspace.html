@@ -193,7 +193,7 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none!important;filter:n
 .sidebar{
  padding:23px 16px;
  background:
-  radial-gradient(260px 240px at 100% 0%,rgba(183,154,247,.13),transparent 72%),
+  radial-gradient(260px 240px at 100% 0%,rgba(37,99,235,.13),transparent 72%),
   linear-gradient(180deg,#141d33f7 0%,#0d1528f7 100%);
  border-left:1px solid rgba(151,166,207,.2);
  box-shadow:16px 0 48px rgba(2,7,20,.16);
@@ -212,7 +212,7 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none!important;filter:n
  border:1px solid rgba(164,151,255,.37);border-radius:19px;
  background:
   radial-gradient(180px 120px at 4% 0%,rgba(227,160,210,.19),transparent 78%),
-  radial-gradient(180px 140px at 100% 100%,rgba(183,154,247,.25),transparent 78%),
+  radial-gradient(180px 140px at 100% 100%,rgba(37,99,235,.25),transparent 78%),
   linear-gradient(145deg,#172033 0%,#1a2540 58%,#142c3d 100%);
  box-shadow:0 15px 34px rgba(3,8,22,.27),inset 0 1px 0 rgba(255,255,255,.08);
 }
@@ -267,11 +267,11 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none!important;filter:n
  color:#DBEAFE;font-size:16px;
 }
 .nav button:hover{
- background:linear-gradient(100deg,rgba(183,154,247,.14),rgba(227,160,210,.045));
- border-color:rgba(183,154,247,.23);color:#fff;transform:translateX(-2px);
+ background:linear-gradient(100deg,rgba(37,99,235,.14),rgba(227,160,210,.045));
+ border-color:rgba(37,99,235,.23);color:#fff;transform:translateX(-2px);
 }
 .nav button.active{
- background:linear-gradient(100deg,rgba(183,154,247,.24),rgba(227,160,210,.09));
+ background:linear-gradient(100deg,rgba(37,99,235,.24),rgba(227,160,210,.09));
  border-color:rgba(217,200,255,.46);
  box-shadow:inset -3px 0 0 var(--workspace-mint),0 7px 20px rgba(3,8,22,.16);
  color:#fff;
@@ -308,7 +308,7 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none!important;filter:n
  box-shadow:0 20px 48px rgba(3,8,22,.2),inset 0 1px 0 rgba(255,255,255,.06);
  background:
   radial-gradient(300px 230px at 4% 100%,rgba(227,160,210,.16),transparent 74%),
-  radial-gradient(360px 260px at 100% 0%,rgba(183,154,247,.18),transparent 75%),
+  radial-gradient(360px 260px at 100% 0%,rgba(37,99,235,.18),transparent 75%),
   linear-gradient(125deg,#172033 0%,#19253e 58%,#142b3a 100%);
 }
 .hero-main h1 span{background:linear-gradient(100deg,#BFDBFE,#83e5d2);background-clip:text;-webkit-background-clip:text;color:transparent}
@@ -316,7 +316,7 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none!important;filter:n
 .stat{background:linear-gradient(145deg,rgba(34,46,75,.93),rgba(19,28,49,.97));border-color:rgba(153,171,214,.16)}
 .stat:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(3,8,22,.2)}
 .quick button{background:linear-gradient(145deg,#1c2945,#141e34);border-color:rgba(153,171,214,.18)}
-.quick button em{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:linear-gradient(145deg,rgba(183,154,247,.2),rgba(227,160,210,.1));border:1px solid rgba(153,171,214,.15)}
+.quick button em{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:linear-gradient(145deg,rgba(37,99,235,.2),rgba(227,160,210,.1));border:1px solid rgba(153,171,214,.15)}
 @media(max-width:1050px){
  .app{grid-template-columns:238px minmax(0,1fr)}
  .workspace-card{padding:13px 12px 11px}
@@ -336,7 +336,7 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none!important;filter:n
 }
 
 </style><link rel="stylesheet" href="./ui-polish.css?v=20261121-nav-compact-1">
- <link rel="stylesheet" href="./design-system.css?v=20261120-organized-dark-1">\n <link rel="stylesheet" href="./production-studio-pro.css?v=20261121-pro-1">
+ <link rel="stylesheet" href="./design-system.css?v=20261125-blue-unified-1">\n <link rel="stylesheet" href="./production-studio-pro.css?v=20261121-pro-1">
  <style id="account-auth-visibility">#accountLoginCard[hidden],#accountCreateCard[hidden]{display:none!important}</style>
 
 <style id="entelaqtak-blue-premium-theme">
@@ -861,13 +861,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
    <div class="field"><label for="accountCreatePassword">كلمة المرور</label><input id="accountCreatePassword" type="password" minlength="8" autocomplete="new-password" placeholder="8 أحرف على الأقل"></div>
    <div class="field"><label for="accountCreatePasswordConfirm">تأكيد كلمة المرور</label><input id="accountCreatePasswordConfirm" type="password" minlength="8" autocomplete="new-password" placeholder="أعد كتابة كلمة المرور"></div>
    <div class="actions"><button class="primary" id="authSignUp" type="button">إنشاء الحساب</button></div>
-   <p id="authSignUpMessage" class="status-line" role="status" aria-live="polite">احتفظ باسم المستخدم وكلمة المرور؛ لا يوجد استرداد تلقائي بدون بريد أو هاتف.</p>
+   <p id="authSignUpMessage" class="status-line" role="status" aria-live="polite">إنشاء الحساب باسم مستخدم وكلمة مرور فقط. احفظ كلمة المرور؛ يمكنك تغييرها من داخل حسابك.</p>
   </section>
   <section class="card account-flow-card" id="accountSessionCard">
    <div class="account-flow-heading"><span>03 · ACCOUNT SESSION</span><h2>تسجيل الخروج</h2></div>
    <p class="muted">إدارة جلسة الحساب الحالية فقط. تسجيل الخروج لا يحذف أعمالك أو نسختك المحلية.</p>
    <div class="account-flow-detail"><span>حالة الحساب</span><b id="authState">غير مسجل</b></div>
    <div class="account-flow-detail"><span>الحساب الحالي</span><b id="accountUser">—</b></div>
+   <div id="authPasswordChangeBox" hidden><p class="muted">تغيير كلمة المرور متاح بعد تسجيل الدخول، من غير الحاجة إلى بريد إلكتروني.</p><div class="field"><label for="accountChangePassword">كلمة المرور الجديدة</label><input id="accountChangePassword" type="password" minlength="8" maxlength="128" autocomplete="new-password" placeholder="8 أحرف على الأقل"></div><div class="actions"><button class="secondary" id="authChangePassword" type="button">تحديث كلمة المرور</button></div></div>
    <div class="actions"><button class="danger" id="authSignOut" type="button" disabled>تسجيل الخروج</button></div>
    <p id="authSignOutMessage" class="status-line" role="status" aria-live="polite">سجّل الدخول أولًا لاستخدام تسجيل الخروج.</p>
   </section>
@@ -978,7 +979,7 @@ async function withAuthButton(id,task){
   if(!sbClient){await connectAuth();if(!sbClient)throw new Error(authInitError||'تعذر تهيئة خدمة الحساب. تحقق من اتصال الإنترنت ثم حاول مرة أخرى.');}
   await task();
  }
- catch(error){console.error('Authentication action failed',error);const targetId=({authSignIn:'authSignInMessage',authSignUp:'authSignUpMessage',authReset:'authSignInMessage',authUpdatePassword:'authSignInMessage',authSignOut:'authSignOutMessage',authSyncNow:'authSyncMessage'})[id]||'authMessage';setAuthMessage(authErrorMessage(error),true,targetId);}
+ catch(error){console.error('Authentication action failed',error);const targetId=({authSignIn:'authSignInMessage',authSignUp:'authSignUpMessage',authReset:'authSignInMessage',authUpdatePassword:'authSignInMessage',authChangePassword:'authSignInMessage',authSignOut:'authSignOutMessage',authSyncNow:'authSyncMessage'})[id]||'authMessage';setAuthMessage(authErrorMessage(error),true,targetId);}
  finally{button.textContent=old;if(id==='authSignOut')button.disabled=!currentUser;else if(id==='authSyncNow')button.disabled=!currentUser||cloudLoading||cloudSaving;else if(id==='authSignIn'||id==='authSignUp')button.disabled=!!currentUser;else button.disabled=false;}
 }
 function updateAccountUI(){
@@ -987,6 +988,7 @@ function updateAccountUI(){
  $('authState').textContent=currentUser?'مسجل الدخول':'غير مسجل';
  $('accountUser').textContent=currentUser?(currentUser.user_metadata?.username||currentUser.user_metadata?.display_name||currentUser.email||'حساب نشط'):'—';
  $('accountSync').textContent=!currentUser?'محلي فقط':cloudLoading?'جارٍ تحميل المساحة':cloudSaving?'جارٍ حفظ التعديلات':(cloudSavePending||cloudSaveTimer)?'في انتظار الحفظ':realtimeConnected?'متصل بالمزامنة المباشرة':'محفوظ سحابيًا';
+ $('authPasswordChangeBox').hidden=!currentUser;
  $('accountAI').textContent='مساعد ذكي عبر الخادم';
  if($('syncState')&&!cloudLoading&&!cloudSaving&&!currentUser)$('syncState').textContent='الحفظ على هذا الجهاز';
  $('connectionBadge').innerHTML='<span class="dot"></span>'+(currentUser?'متصل بحسابك':'مساحة العمل');
@@ -1336,13 +1338,23 @@ $('authSignIn').addEventListener('click',()=>withAuthButton('authSignIn',async()
 $('authSignUp').addEventListener('click',()=>withAuthButton('authSignUp',async()=>{
  if(!sbClient)throw new Error('خدمة الحساب لم تكتمل تهيئتها. حدّث الصفحة وحاول مرة أخرى.');
  const username=$('accountCreateUsername').value,password=$('accountCreatePassword').value,confirmPassword=$('accountCreatePasswordConfirm').value;
- if(password.length<8)throw new Error('كلمة المرور يجب ألا تقل عن 8 أحرف.');
+ if(password.length<8||password.length>128)throw new Error('كلمة المرور يجب أن تكون من 8 إلى 128 حرفًا.');
  if(password!==confirmPassword)throw new Error('كلمتا المرور غير متطابقتين.');
  const account=await usernameToAuthEmail(username);
- const {data,error}=await sbClient.auth.signUp({email:account.email,password,options:{data:{username:account.username,display_name:account.username}}});
- if(error)throw error;
- if(data.session)setAuthMessage('تم إنشاء حسابك بنجاح وتسجيل الدخول. جارٍ تجهيز مساحة عملك.',false,'authSignUpMessage');
- else setAuthMessage('Supabase ما زال يطلب تأكيد البريد. يجب إيقاف خيار Confirm email في إعدادات Auth قبل إنشاء الحسابات بدون بريد.',true,'authSignUpMessage');
+ const config=window.ENTELAQTAK_CONFIG||{};
+ const baseUrl=String(config.url||'').replace(/\/$/,'');
+ if(!baseUrl||!config.publishableKey)throw new Error('إعداد الاتصال بالخادم غير مكتمل.');
+ const response=await fetch(baseUrl+'/functions/v1/username-signup',{
+  method:'POST',
+  headers:{'Content-Type':'application/json','apikey':config.publishableKey},
+  body:JSON.stringify({username:account.username,password})
+ });
+ const result=await response.json().catch(()=>({}));
+ if(!response.ok)throw new Error(result.error||'تعذر إنشاء الحساب. حاول مرة أخرى.');
+ const {error:loginError}=await sbClient.auth.signInWithPassword({email:account.email,password});
+ if(loginError)throw new Error('تم إنشاء الحساب، لكن تعذر تسجيل الدخول تلقائيًا. استخدم اسم المستخدم وكلمة المرور لتسجيل الدخول.');
+ $('accountCreatePassword').value='';$('accountCreatePasswordConfirm').value='';
+ setAuthMessage('تم إنشاء حسابك وتسجيل الدخول بنجاح. جارٍ تجهيز مساحة عملك.',false,'authSignUpMessage');
 }));
 $('authUpdatePassword').addEventListener('click',()=>withAuthButton('authUpdatePassword',async()=>{
  if(!sbClient)throw new Error('خدمة الحساب غير متاحة حاليًا.');
@@ -1352,6 +1364,15 @@ $('authUpdatePassword').addEventListener('click',()=>withAuthButton('authUpdateP
  if(error)throw error;
  $('loginPassword').value='';$('accountNewPassword').value='';$('authRecoveryBox').hidden=true;
  passwordRecoveryMode=false;updateAccountUI();
+ setAuthMessage('تم تحديث كلمة المرور بنجاح.',false,'authSignInMessage');
+}));
+$('authChangePassword').addEventListener('click',()=>withAuthButton('authChangePassword',async()=>{
+ if(!sbClient||!currentUser)throw new Error('سجّل الدخول أولًا لتغيير كلمة المرور.');
+ const password=$('accountChangePassword').value;
+ if(password.length<8||password.length>128)throw new Error('كلمة المرور الجديدة يجب أن تكون من 8 إلى 128 حرفًا.');
+ const {error}=await sbClient.auth.updateUser({password});
+ if(error)throw error;
+ $('accountChangePassword').value='';
  setAuthMessage('تم تحديث كلمة المرور بنجاح.',false,'authSignInMessage');
 }));
 $('authSyncNow').addEventListener('click',()=>withAuthButton('authSyncNow',async()=>{
@@ -1690,7 +1711,7 @@ $('year').textContent=new Date().getFullYear();if($('aiSettingsStatus'))renderSe
 <script src="./enhancements.js" defer></script>
 <script src="./theme.js" defer></script>
 <script src="./platform-hub.js" defer></script>
-<script src="./visitor-tracker.js" defer></script>
+<script src="./visitor-tracker.js?v=20261125-heartbeat-1" defer></script>
 <script src="./production-studio.js?v=20261121-production-robust-2" defer onerror="window.__entelaqtakProductionStudioStatus='load-error'"></script>
 <script src="./production-studio-pro.js" defer></script>
 <script src="./content-pack-pro.js" defer></script>

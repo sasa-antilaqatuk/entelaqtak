@@ -22,7 +22,7 @@
 /* Script Quality Lab */
 .prod-script-coach{
  margin:18px 0 5px;padding:18px;border:1px solid #514477;border-radius:17px;
- background:radial-gradient(360px 180px at 0 0,#9278D821,transparent 72%),linear-gradient(145deg,#1b1b31,#111827);
+ background:radial-gradient(360px 180px at 0 0,#1D4ED821,transparent 72%),linear-gradient(145deg,#1b1b31,#111827);
  box-shadow:0 14px 34px #03071255,inset 0 1px 0 #ffffff08
 }
 .prod-script-coach-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}
@@ -30,7 +30,7 @@
 .prod-script-coach-head p{margin:0;color:#aab5ca;font-size:10px}
 .prod-script-coach-mark{
  display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:13px;
- color:#e5d9ff;background:linear-gradient(145deg,#9278D833,#D9C8FF18);border:1px solid #9278D866;font-size:21px
+ color:#e5d9ff;background:linear-gradient(145deg,#1D4ED833,#BFDBFE18);border:1px solid #1D4ED866;font-size:21px
 }
 .prod-script-coach .prod-actions{margin:12px 0}
 .prod-script-coach .prod-review-editor{min-height:190px;border-color:#4a4269;background:#0d1220}

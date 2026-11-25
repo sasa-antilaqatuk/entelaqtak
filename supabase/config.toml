@@ -2,3 +2,9 @@
 # signed-in sessions itself and also permits anonymous AI requests by design.
 [functions.ai-assistant]
 verify_jwt = false
+
+[functions.username-signup]
+verify_jwt = false
+
+[functions.visitor-heartbeat]
+verify_jwt = false
