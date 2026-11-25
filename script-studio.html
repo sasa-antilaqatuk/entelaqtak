@@ -110,7 +110,7 @@ function backup(){saveForm();download(JSON.stringify({app:'SASA_STUDIO_PRO',vers
 function restore(file){if(!file)return;const reader=new FileReader();reader.onload=e=>{try{const d=JSON.parse(e.target.result),arr=Array.isArray(d)?d:d.projects;if(!Array.isArray(arr)||!arr.length||!arr.every(p=>p&&Array.isArray(p.scenes)))throw 0;if(!confirm('استعادة النسخة ستستبدل المشاريع الحالية. هل تريد المتابعة؟'))return;projects=arr.map(p=>({...p,id:p.id||'p_'+Math.random()}));currentId=projects[0].id;persist();renderSelector();loadForm();alert('تمت استعادة النسخة الاحتياطية.');}catch(err){alert('ملف النسخة الاحتياطية غير صالح.');}};reader.readAsText(file,'UTF-8');}
 $('newProject').onclick=()=>{saveForm();const p=blank('مشروع فيديو جديد #'+(projects.length+1));projects.unshift(p);currentId=p.id;persist();renderSelector();loadForm();};
 $('deleteProject').onclick=()=>{if(projects.length<2){alert('لا يمكن حذف المشروع الوحيد.');return;}if(confirm('متأكد إنك عايز تحذف المشروع الحالي؟')){projects=projects.filter(p=>p.id!==currentId);currentId=projects[0].id;persist();renderSelector();loadForm();}};
-$('projectSelector').onchange=e=>{saveForm();currentId=e.target.value;loadForm();};
+$('projectSelector').onchange=e=>{const selectedId=e.target.value;saveForm();currentId=selectedId;loadForm();};
 ['title','category','thumbnail','status','speed','hook'].forEach(id=>$(id).addEventListener(id==='hook'?'input':'change',()=>{saveForm();totals();}));
 $('speed').addEventListener('change',()=>{renderScenes();totals()});
 $('addScene').onclick=$('addSceneBottom').onclick=()=>addScene();
