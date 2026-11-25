@@ -305,3 +305,13 @@ html[dir="ltr"] #nav.nav-organized-desktop button[data-view].active{box-shadow:i
   #nav.nav-organized-desktop{flex:1 1 auto!important;max-height:none!important}
   #nav.nav-organized-desktop>.nav-section{flex-shrink:0!important}
 }
+
+#nav.nav-organized-desktop>.nav-section>.nav-section-items>a.nav-external{
+  display:flex!important;flex:0 0 auto!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;
+  width:100%!important;min-height:38px!important;height:auto!important;padding:5px 8px!important;gap:8px!important;
+  border:1px solid rgba(56,189,248,.24)!important;border-radius:10px!important;background:rgba(56,189,248,.08)!important;
+  color:var(--text,#e5e7eb)!important;text-decoration:none!important;font:inherit!important;line-height:1.4!important;white-space:normal!important;
+}
+#nav.nav-organized-desktop>.nav-section>.nav-section-items>a.nav-external:hover{background:rgba(56,189,248,.16)!important;border-color:rgba(56,189,248,.5)!important;color:#fff!important}
+#nav.nav-organized-desktop>.nav-section>.nav-section-items>a.nav-external>.nav-icon{display:grid!important;place-items:center!important;flex:0 0 25px!important;width:25px!important;height:25px!important;font-style:normal!important}
+#nav.nav-organized-desktop>.nav-section>.nav-section-items>a.nav-external>.nav-label{display:block!important;flex:1 1 auto!important;min-width:0!important;text-align:start!important;overflow-wrap:anywhere!important}
