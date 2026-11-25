@@ -1,0 +1,51 @@
+/* Entelaqtak Project Assets — private media and library attachments */
+#projectAssetsPanel{margin:15px 0 22px;padding:17px;border:1px solid #2b4265;border-radius:17px;background:radial-gradient(360px 180px at 0 0,#2563eb1d,transparent 72%),linear-gradient(145deg,#111d32,#0c1628);color:#eef5ff;min-width:0}
+#projectAssetsPanel .pa-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:15px}
+#projectAssetsPanel .pa-kicker{font-size:9px;color:#8fc9ff;font-weight:900;letter-spacing:.7px}
+#projectAssetsPanel h2{font-size:17px;margin:4px 0}
+#projectAssetsPanel .pa-heading p{font-size:10px;color:#a8bad2;line-height:1.8;margin:0}
+#projectAssetsPanel .pa-counts{display:flex;gap:6px;flex-wrap:wrap}
+#projectAssetsPanel .pa-counts b{border:1px solid #33517a;border-radius:9px;padding:7px 9px;background:#142746;color:#cfe6ff;font-size:9px;white-space:nowrap}
+#projectAssetsPanel .pa-tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}
+#projectAssetsPanel .pa-tool-card{padding:13px;border:1px solid #2b3e5c;border-radius:13px;background:#0d192c;min-width:0}
+#projectAssetsPanel .pa-tool-heading{display:flex;align-items:center;gap:9px;margin-bottom:11px}
+#projectAssetsPanel .pa-tool-heading>span{width:32px;height:32px;display:grid;place-items:center;border-radius:10px;background:#2563eb25;font-size:16px}
+#projectAssetsPanel .pa-tool-heading strong,#projectAssetsPanel .pa-tool-heading small{display:block}
+#projectAssetsPanel .pa-tool-heading strong{font-size:11px;color:#edf5ff}
+#projectAssetsPanel .pa-tool-heading small{font-size:8px;color:#8198b8;margin-top:3px;line-height:1.6}
+#projectAssetsPanel .pa-upload-label{display:flex;align-items:center;justify-content:center;min-height:45px;padding:10px;border:1px dashed #4770a3;border-radius:10px;background:#122541;color:#d9ebff;font-size:10px;font-weight:700;cursor:pointer;text-align:center}
+#projectAssetsPanel .pa-upload-label:hover{border-color:#60a5fa;background:#183255}
+#projectAssetsPanel .pa-upload-label input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+#projectAssetsPanel .pa-hint{display:block;color:#8296b2;font-size:8px;line-height:1.8;margin-top:8px}
+#projectAssetsPanel .pa-library-select{width:100%;min-width:0;min-height:42px;padding:9px;border:1px solid #344d6e;border-radius:9px;background:#091426;color:#edf5ff;font:10px Tahoma,Arial,sans-serif}
+#projectAssetsPanel button{font:700 9px Tahoma,Arial,sans-serif;cursor:pointer}
+#projectAssetsPanel button:disabled{opacity:.55;cursor:not-allowed}
+#projectAssetsPanel .pa-primary,#projectAssetsPanel .pa-secondary{width:100%;margin-top:8px;padding:10px;border-radius:9px}
+#projectAssetsPanel .pa-primary{border:0;background:linear-gradient(120deg,#2563eb,#38bdf8);color:#071323}
+#projectAssetsPanel .pa-secondary{border:1px solid #35577e;background:#132745;color:#cfe6ff}
+#projectAssetsPanel .pa-status{margin-top:8px;min-height:16px;color:#91b4dc;font-size:8px;line-height:1.7}
+#projectAssetsPanel .pa-status.is-error{color:#ffb4bd}
+#projectAssetsPanel .pa-list-head{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin:7px 0 10px;padding-top:14px;border-top:1px solid #263a57}
+#projectAssetsPanel .pa-list-head h3{font-size:13px;margin:0 0 3px}
+#projectAssetsPanel .pa-list-head small,#projectAssetsPanel .pa-list-head>span{font-size:8px;color:#8197b4}
+#projectAssetsPanel .pa-items{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#projectAssetsPanel .pa-item{display:grid;grid-template-columns:34px minmax(0,1fr);gap:8px;align-items:start;padding:10px;border:1px solid #2a3e5d;border-radius:11px;background:#0c1729;min-width:0}
+#projectAssetsPanel .pa-item-icon{width:32px;height:32px;border-radius:9px;background:#1c3352;display:grid;place-items:center;font-size:15px}
+#projectAssetsPanel .pa-item-info{min-width:0}
+#projectAssetsPanel .pa-item-info strong{display:block;color:#edf5ff;font-size:10px;line-height:1.6;overflow-wrap:anywhere}
+#projectAssetsPanel .pa-item-info small{display:block;color:#8297b4;font-size:8px;margin-top:3px;overflow-wrap:anywhere}
+#projectAssetsPanel .pa-item-actions{grid-column:1/-1;display:flex;gap:5px;flex-wrap:wrap;padding-top:3px}
+#projectAssetsPanel .pa-item-actions button{padding:6px 8px;border:1px solid #324966;border-radius:7px;background:#14243b;color:#c8dcf4}
+#projectAssetsPanel .pa-item-actions button:hover{border-color:#60a5fa;background:#1a3150}
+#projectAssetsPanel .pa-item-actions button.pa-remove,#projectAssetsPanel .pa-item-actions button[data-pa-action="remove"]{color:#f0a6af}
+#projectAssetsPanel .pa-empty{grid-column:1/-1;padding:17px;text-align:center;border:1px dashed #385071;border-radius:11px;color:#94a8c3;font-size:9px;line-height:1.8}
+#projectAssetsPanel .pa-preview-dialog{width:min(900px,94vw);max-width:94vw;max-height:88vh;padding:0;border:1px solid #45638a;border-radius:14px;background:#0b1424;color:#eff6ff}
+#projectAssetsPanel .pa-preview-dialog::backdrop{background:#020817cc;backdrop-filter:blur(5px)}
+#projectAssetsPanel .pa-preview-head{display:flex;justify-content:space-between;align-items:center;padding:10px 13px;border-bottom:1px solid #2e4464;font-size:11px}
+#projectAssetsPanel .pa-preview-head button{width:29px;height:29px;border:1px solid #3b4f6d;border-radius:8px;background:#16253d;color:white;font-size:18px}
+#projectAssetsPanel .pa-preview-body{display:grid;place-items:center;max-height:calc(88vh - 50px);overflow:auto;padding:12px}
+#projectAssetsPanel .pa-preview-body img,#projectAssetsPanel .pa-preview-body video{display:block;max-width:100%;max-height:calc(88vh - 85px);object-fit:contain}
+#projectAssetsPanel .pa-preview-body audio{width:min(640px,100%)}
+#projectAssetsPanel .pa-preview-body iframe{width:100%;height:70vh;border:0;background:#fff}
+#projectAssetsPanel .pa-preview-body pre{width:100%;max-height:70vh;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;color:#e2e8f0;font:11px/1.8 Tahoma,Arial,sans-serif}
+@media(max-width:760px){#projectAssetsPanel{padding:12px}#projectAssetsPanel .pa-heading{display:block}#projectAssetsPanel .pa-counts{margin-top:9px}#projectAssetsPanel .pa-tools-grid,#projectAssetsPanel .pa-items{grid-template-columns:1fr}}
