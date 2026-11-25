@@ -203,7 +203,7 @@
       tone:$('prodTone',view).value,stage:'brief',
       researchText:'',researchSources:[],factClaim:'',factText:'',factSources:[],
       script:'',scriptReview:'',scriptPrevious:'',editPlan:'',publishPack:'',publishTitle:'',publishDescription:'',
-      publishKeywords:'',thumbnailPrompt:'',publishDate:'',checklist:{},
+      publishKeywords:'',thumbnailPrompt:'',publishDate:'',checklist:{},attachments:[],
       createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()
     };
     activeId = p.id;
@@ -408,10 +408,14 @@
       persist(p,false);app.save();app.go('calendar');app.toast('اتضاف موعد المشروع لتقويم النشر. راجع الموعد قبل النشر.');return;
     }
     if (action==='delete') {
-      if (!confirm('تحذف المشروع ده بكل البحث والسكريبت وخطة المونتاج؟')) return;
-      const data=app.getState();
-      data.productionProjects=data.productionProjects.filter(x=>String(x.id)!==String(p.id));
-      activeId='';try{localStorage.removeItem('entelaqtak-active-production-v1');}catch(_){}app.save();render();app.toast('تم حذف المشروع.');return;
+      if (!confirm('تحذف المشروع ده بكل البحث والسكريبت وخطة المونتاج؟ سيتم حذف الملفات السحابية المرفقة به أيضًا.')) return;
+      const trigger=event.target.closest('[data-action="delete"]');
+      if(trigger)trigger.disabled=true;
+      const removeProject=()=>{const data=app.getState();data.productionProjects=data.productionProjects.filter(x=>String(x.id)!==String(p.id));activeId='';try{localStorage.removeItem('entelaqtak-active-production-v1');}catch(_){}app.save();render();app.toast('تم حذف المشروع ومرفقاته.');};
+      const cleanup=window.EntelaqtakProjectAssets?.deleteProjectFiles;
+      if(cleanup)cleanup(p).then(removeProject).catch(error=>{if(trigger)trigger.disabled=false;app.toast(error?.message||'تعذر حذف الملفات السحابية؛ المشروع لم يُحذف.');});
+      else removeProject();
+      return;
     }
   });
 
