@@ -310,7 +310,7 @@ jobs:
               errors.append(f"sitemap.xml: invalid XML ({exc})")
 
           worker = Path("service-worker.js").read_text(encoding="utf-8")
-          marker = "const APP_FILES="
+          marker = "const APP_FILES"
           position = worker.find(marker)
           opening = worker.find("[", position) if position >= 0 else -1
           closing = worker.find("]", opening) if opening >= 0 else -1
