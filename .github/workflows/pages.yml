@@ -323,7 +323,7 @@ jobs:
                       cached = cached[1:-1]
                   if not cached:
                       continue
-                  path = cached.removeprefix("./") or "index.html"
+                  path = unquote(urlparse(cached).path).removeprefix("./") or "index.html"
                   if not Path(path).is_file():
                       errors.append(f"service-worker.js: missing precache file {cached}")
 
