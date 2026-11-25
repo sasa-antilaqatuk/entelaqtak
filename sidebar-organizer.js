@@ -13,7 +13,7 @@
     ]},
     { id:'create', title:'صناعة المحتوى', items:[
       ['production','استوديو الإنتاج','▶'],['studio','استوديو المحتوى','✍'],['script','كاتب السكريبت','▤'],['repurpose','إعادة تدوير المحتوى','♻']
-    ]},
+    ], external:[['./script-studio.html','SASA Script Studio','🎙️']]},
     { id:'design', title:'التصميم والتحسين', items:[
       ['titles','العناوين والصورة','▣'],['thumbnail','مصمم الصور المصغّرة','▧'],['seo','مساعد SEO','⌕'],
       ['video','مصنع الفيديوهات','▷'],['brand','هوية المحتوى','◈'],['lab','مختبر العناوين','⚗']
@@ -99,6 +99,22 @@
     const items = document.createElement('div');
     items.className = 'nav-section-items';
     available.forEach(([id]) => items.appendChild(buttons.get(id)));
+    (section.external || []).forEach(([href, label, glyph]) => {
+      const link = document.createElement('a');
+      link.className = 'nav-external';
+      link.href = href;
+      link.title = label;
+      link.setAttribute('aria-label', label);
+      const icon = document.createElement('i');
+      icon.className = 'nav-icon';
+      icon.setAttribute('aria-hidden', 'true');
+      icon.textContent = glyph;
+      const text = document.createElement('span');
+      text.className = 'nav-label';
+      text.textContent = label;
+      link.append(icon, text);
+      items.appendChild(link);
+    });
     group.append(heading, items);
     fragment.appendChild(group);
   }
@@ -192,7 +208,8 @@
 
   nav.addEventListener('click', event => {
     const button = event.target.closest('button[data-view]');
-    if (button && nav.contains(button) && isCompactLayout()) {
+    const externalLink = event.target.closest('a.nav-external');
+    if (((button && nav.contains(button)) || (externalLink && nav.contains(externalLink))) && isCompactLayout()) {
       setDrawerState(false, 'toggle');
     }
   });
