@@ -107,6 +107,7 @@
       thumbnailPrompt:'',
       publishDate:'',
       checklist:{},
+      attachments:[],
       createdAt:stamp,
       updatedAt:stamp
     };
@@ -135,7 +136,7 @@
       '<h3>' + safe(project.topic || 'مشروع بدون عنوان') + '</h3>' +
       '<p class="ph-card-meta">' + safe(project.platform || 'YouTube') + ' <span>•</span> ' + safe(project.duration || 'المدة غير محددة') + '</p>' +
       '<div class="ph-progress-head"><span>تقدم المشروع</span><strong>' + percent + '%</strong></div><div class="ph-progress"><span style="width:' + percent + '%"></span></div>' +
-      '<div class="ph-card-stats"><span class="' + (researchReady ? 'is-done' : '') + '">بحث ' + (researchReady ? '✓' : '—') + '</span><span class="' + (scriptReady ? 'is-done' : '') + '">سكريبت ' + (scriptReady ? '✓' : '—') + '</span><span class="' + (editReady ? 'is-done' : '') + '">مونتاج ' + (editReady ? '✓' : '—') + '</span></div>' +
+      '<div class="ph-card-stats"><span class="' + (researchReady ? 'is-done' : '') + '">بحث ' + (researchReady ? '✓' : '—') + '</span><span class="' + (scriptReady ? 'is-done' : '') + '">سكريبت ' + (scriptReady ? '✓' : '—') + '</span><span class="' + (editReady ? 'is-done' : '') + '">مونتاج ' + (editReady ? '✓' : '—') + '</span><span>مرفقات ' + (Array.isArray(project.attachments) ? project.attachments.length : 0) + '</span></div>' +
       '<div class="ph-card-bottom"><span>آخر تعديل: ' + safe(projectDate(project)) + '</span><button type="button" class="ph-open-btn" data-ph-action="open" data-id="' + safe(project.id) + '">افتح المشروع <span>←</span></button></div>' +
       '<div class="ph-stage-actions">' + stages.map(item => '<button type="button" data-ph-action="stage" data-stage="' + item.id + '" data-id="' + safe(project.id) + '" class="' + (item.id === project.stage ? 'is-current' : '') + '">' + safe(item.short) + '</button>').join('') + '</div>' +
       '<div class="ph-card-tools"><button type="button" data-ph-action="export" data-id="' + safe(project.id) + '">تصدير نسخة</button><button type="button" class="is-danger" data-ph-action="delete" data-id="' + safe(project.id) + '">حذف</button></div>' +
@@ -209,6 +210,7 @@
       const copy = JSON.parse(JSON.stringify(project));
       copy.id = getId();
       copy.topic = String(project.topic || 'مشروع') + ' — نسخة';
+      copy.attachments = (Array.isArray(project.attachments) ? project.attachments : []).filter(item => item && item.kind === 'library').map(item => ({...item,id:getId()}));
       copy.createdAt = new Date().toISOString();
       copy.updatedAt = copy.createdAt;
       app.getState().productionProjects.unshift(copy);
@@ -218,15 +220,19 @@
       return;
     }
     if (action === 'delete') {
-      if (!confirm('تحذف المشروع ده بكل البحث والسكريبت وخطة المونتاج؟')) return;
-      const state = app.getState();
-      state.productionProjects = state.productionProjects.filter(item => String(item.id) !== String(id));
-      try {
-        if (localStorage.getItem('entelaqtak-active-production-v1') === String(id)) localStorage.removeItem('entelaqtak-active-production-v1');
-      } catch (_) {}
-      app.save();
-      app.toast('تم حذف المشروع من مساحة عملك.');
-      render();
+      if (!confirm('تحذف المشروع ده بكل البحث والسكريبت وخطة المونتاج؟ سيتم حذف الملفات السحابية المرفقة به أيضًا.')) return;
+      button.disabled = true;
+      const removeProject = () => {
+        const state = app.getState();
+        state.productionProjects = state.productionProjects.filter(item => String(item.id) !== String(id));
+        try { if (localStorage.getItem('entelaqtak-active-production-v1') === String(id)) localStorage.removeItem('entelaqtak-active-production-v1'); } catch (_) {}
+        app.save();
+        app.toast('تم حذف المشروع ومرفقاته.');
+        render();
+      };
+      const cleanup = window.EntelaqtakProjectAssets?.deleteProjectFiles;
+      if (cleanup) cleanup(project).then(removeProject).catch(error => { button.disabled = false; app.toast(error?.message || 'تعذر حذف الملفات السحابية؛ المشروع لم يُحذف.'); });
+      else removeProject();
       return;
     }
     if (action === 'export') {
