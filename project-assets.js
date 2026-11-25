@@ -240,14 +240,14 @@
         setStatus('جارٍ رفع ' + (saved + 1) + ' من ' + files.length + ': ' + file.name);
         await uploadOne(project,file,extra);
         saved++;
-        renderPanel();
       }
-      setStatus('تم رفع ' + saved + ' ملف وحفظه داخل المشروع.');
       app.toast('تم رفع الملفات وربطها بالمشروع.');
     } finally {
+      renderPanel();
       const freshInput = document.getElementById('paFileInput');
       if (freshInput) freshInput.disabled = false;
     }
+    setStatus('تم رفع ' + saved + ' ملف وحفظه داخل المشروع.');
     return saved;
   }
 
