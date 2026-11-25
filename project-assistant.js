@@ -212,13 +212,13 @@
     if (message.appliedAt && !message.restoredAt) { app.toast('التعديل مطبّق بالفعل.'); return; }
     const before=String(project[proposal.field] == null ? '' : project[proposal.field]);
     if (before===proposal.content) { app.toast('المحتوى الحالي مطابق للتعديل المقترح بالفعل.'); return; }
-    if (!confirm('تطبيق "'+proposal.title+'" على حقل '+proposal.fieldLabel+'؟\\nسيتم حفظ النسخة الحالية لتقدر ترجع لها.')) return;
+    if (!confirm('تطبيق "'+proposal.title+'" على حقل '+proposal.fieldLabel+'؟\nسيتم حفظ النسخة الحالية لتقدر ترجع لها.')) return;
     const record={
       id:'aih-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7),
       field:proposal.field,
       label:proposal.fieldLabel,
       title:proposal.title,
-      before:before.slice(0,10000),
+      before,
       after:proposal.content,
       createdAt:stamp()
     };
