@@ -63,7 +63,7 @@ jobs:
               raise SystemExit("No executable inline JavaScript found")
           print(f"Extracted {total} executable inline script(s) from all interactive HTML pages.")
           PY
-          for file in creator-suite.js enhancements.js theme.js platform-hub.js production-studio.js production-studio-pro.js sidebar-organizer.js content-pack-pro.js library-center.js visitor-tracker.js control-center.js workspace-pro.js service-worker.js language.js; do
+          for file in creator-suite.js enhancements.js theme.js platform-hub.js production-studio.js production-studio-pro.js sidebar-organizer.js projects-hub.js content-pack-pro.js library-center.js visitor-tracker.js control-center.js workspace-pro.js service-worker.js language.js; do
             echo "Checking $file"
             node --check "$file"
           done
@@ -132,6 +132,10 @@ jobs:
           assert(polish.includes('#nav.nav-organized-desktop') && responsive.includes('#nav.nav-organized-desktop .nav-section-title::after') && responsive.includes('content:none!important'), 'Always-open, arrow-free sidebar styles are missing.');
           assert(sidebar.includes('Sidebar System v6') && sidebar.includes('html.sidebar-js-ready #workspaceSidebar.sidebar.is-drawer-open') && sidebar.includes('.sidebar-drawer-backdrop[hidden]'), 'Unified sidebar drawer rules or overlay visibility are missing.');
           assert(organizer.includes('organizedV5') && organizer.includes('nav-label') && organizer.includes('nav-home-shortcut'), 'Sidebar text labels or single home shortcut are missing.');
+          const projectsHub = fs.readFileSync('projects-hub.js', 'utf8');
+          assert(workspace.includes('projects-hub.css?v=20261125-project-hub-1') && workspace.includes('projects-hub.js?v=20261125-project-hub-1'), 'Projects Hub assets are not linked.');
+          assert(organizer.includes("['projects','مشاريعي','▦']") && projectsHub.includes('app.addViews.add(\'projects\')') && projectsHub.includes('openProductionProject'), 'Projects Hub module and routes are not linked.');
+          assert(worker.includes("'./projects-hub.js'") && worker.includes("'./projects-hub.css'"), 'Projects Hub offline assets are missing.');
           assert(sidebar.includes('Sidebar layout repair v7') && sidebar.includes('flex:0 0 auto!important') && sidebar.includes('>.nav-section-items>button[data-view]>.nav-label'), 'Sidebar sections and labels must retain their natural vertical layout.');
           assert(sidebar.includes('@media(min-width:1101px)') && sidebar.includes('@media(max-width:1100px)') && sidebar.includes('html[dir="ltr"].sidebar-js-ready'), 'Desktop/mobile or LTR sidebar positioning is incomplete.');
           assert(responsive.includes('Navigation Redesign v5') && responsive.includes('#workspaceSidebar>.workspace-card') && responsive.includes('--nav-blue:#3b82f6'), 'Premium sidebar redesign styles are missing.');
