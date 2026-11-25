@@ -46,13 +46,17 @@
     const thread=panel.querySelector('[data-paa-thread]');
     if(!thread)return;
     const messages=conversationOf(project);
+    const signature=JSON.stringify(messages.map(item=>[item.role,item.content]));
+    if(panel.dataset.threadSignature===signature)return;
     if(!messages.length){
       thread.innerHTML='<div class="paa-welcome"><span>✦</span><b>أهلًا بيك في مساعد المشروع</b><p>اسألني عن الفكرة أو البحث أو السكريبت أو المونتاج أو النشر. هراجع المعلومات المحفوظة في المشروع قبل ما أرد.</p></div>';
+      panel.dataset.threadSignature=signature;
       return;
     }
     thread.innerHTML=messages.map((message,index)=>
       '<article class="paa-message paa-'+message.role+'"><div class="paa-message-top"><b>'+(message.role==='user'?'أنت':'مساعد المشروع')+'</b><button type="button" data-paa-copy="'+index+'">نسخ</button></div><div class="paa-message-text">'+esc(message.content)+'</div></article>'
     ).join('');
+    panel.dataset.threadSignature=signature;
     thread.scrollTop=thread.scrollHeight;
   }
   function syncPanel() {
