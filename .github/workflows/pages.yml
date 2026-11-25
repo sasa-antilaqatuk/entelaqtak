@@ -137,7 +137,7 @@ jobs:
           assert(organizer.includes("['projects','مشاريعي','▦']") && projectsHub.includes('app.addViews.add(\'projects\')') && projectsHub.includes('openProductionProject'), 'Projects Hub module and routes are not linked.');
           assert(worker.includes("'./projects-hub.js'") && worker.includes("'./projects-hub.css'"), 'Projects Hub offline assets are missing.');
           const projectAssets = fs.readFileSync('project-assets.js', 'utf8');
-          const projectAssetsMigration = fs.readFileSync('supabase/migrations/20261125030000_create_private_project_assets_bucket.sql', 'utf8');
+          const projectAssetsMigration = fs.readFileSync('supabase/migrations/20261125030221_create_private_project_assets_bucket.sql', 'utf8');
           assert(workspace.includes('project-assets.css?v=20261125-project-assets-1') && workspace.includes('project-assets.js?v=20261125-project-assets-1'), 'Project Assets module is not linked.');
           assert(projectAssets.includes("entelaqtak-project-assets") && projectAssets.includes('getSupabaseClient') && projectAssets.includes('deleteProjectFiles'), 'Project Assets storage integration is incomplete.');
           assert(projectAssetsMigration.includes("public = false") && projectAssetsMigration.includes('storage.foldername(name)') && projectAssetsMigration.includes('auth.uid()'), 'Project Assets private bucket policies are missing.');
