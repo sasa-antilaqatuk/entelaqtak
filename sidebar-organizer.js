@@ -263,5 +263,27 @@
   }));
 
   buildNavigation();
+
+  // Keep the standalone SASA Script Studio shortcut visible even if the
+  // navigation sections are rebuilt or reordered by another script.
+  function ensureSasaStudioShortcut() {
+    const createSection = nav.querySelector('[data-nav-section="create"] .nav-section-items');
+    if (!createSection || createSection.querySelector('a[href="./script-studio.html"]')) return;
+    const link = document.createElement('a');
+    link.className = 'nav-external';
+    link.href = './script-studio.html';
+    link.title = 'SASA Script Studio';
+    link.setAttribute('aria-label', 'SASA Script Studio');
+    const icon = document.createElement('i');
+    icon.className = 'nav-icon';
+    icon.setAttribute('aria-hidden', 'true');
+    icon.textContent = '🎙️';
+    const label = document.createElement('span');
+    label.className = 'nav-label';
+    label.textContent = 'SASA Script Studio';
+    link.append(icon, label);
+    createSection.appendChild(link);
+  }
+  ensureSasaStudioShortcut();
   setDrawerState(false);
 })();
