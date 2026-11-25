@@ -275,6 +275,12 @@
     if (!(data instanceof Blob)) throw new Error('تعذر قراءة محتوى الملف.');
     return {blob:data,attachment,project};
   }
+  async function readTextAttachment(projectId, attachmentId, maxChars=450) {
+    const result = await getFileBlob(projectId,attachmentId);
+    if (result.attachment.mime !== 'text/plain' || Number(result.attachment.size) > 128 * 1024) return '';
+    const limit = Math.max(1,Math.min(900,Number(maxChars) || 450));
+    return String(await result.blob.text()).slice(0,limit);
+  }
   function downloadBlob(blob,name) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -490,6 +496,7 @@
   window.EntelaqtakProjectAssets = {
     deleteProjectFiles,
     downloadAttachment,
+    readTextAttachment,
     refresh:renderPanel
   };
 })();

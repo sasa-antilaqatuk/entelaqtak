@@ -1,0 +1,42 @@
+/* Project Assistant — scoped, responsive conversation panel */
+#projectAssistantPanel{margin:16px 0 24px;padding:18px;border:1px solid #31517a;border-radius:18px;background:radial-gradient(420px 220px at 0 0,#2563eb24,transparent 72%),linear-gradient(145deg,#111e34,#0c1729);color:#edf5ff;min-width:0}
+#projectAssistantPanel .paa-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+#projectAssistantPanel .paa-brand{display:flex;align-items:center;gap:12px;min-width:0}
+#projectAssistantPanel .paa-mark{width:40px;height:40px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(140deg,#2563eb,#38bdf8);color:#06182b;font-size:22px;box-shadow:0 8px 22px #2563eb42;flex:0 0 auto}
+#projectAssistantPanel .paa-kicker{font-size:8px;letter-spacing:1px;color:#8fc9ff;font-weight:900}
+#projectAssistantPanel h2{font-size:17px;margin:2px 0}
+#projectAssistantPanel .paa-brand p{font-size:10px;color:#9eb3ce;margin:0;line-height:1.7}
+#projectAssistantPanel .paa-head-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+#projectAssistantPanel .paa-context-badge{padding:6px 9px;border:1px solid #2c775a;border-radius:99px;background:#123e32;color:#9ff0c9;font-size:8px;white-space:nowrap}
+#projectAssistantPanel button{font:700 9px Tahoma,Arial,sans-serif;cursor:pointer}
+#projectAssistantPanel button:disabled{opacity:.55;cursor:not-allowed}
+#projectAssistantPanel .paa-clear{padding:7px 9px;border:1px solid #3a4c69;border-radius:9px;background:#ffffff08;color:#b8c7dc}
+#projectAssistantPanel .paa-clear:hover{border-color:#e18a95;color:#ffd1d7}
+#projectAssistantPanel .paa-context-row{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0 10px}
+#projectAssistantPanel .paa-context-row span{padding:6px 9px;border:1px solid #2d405e;border-radius:9px;background:#0c192d;color:#b5c7df;font-size:8px}
+#projectAssistantPanel .paa-suggestions{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}
+#projectAssistantPanel .paa-suggestions button{padding:7px 10px;border:1px solid #35547b;border-radius:99px;background:#132947;color:#cfe7ff}
+#projectAssistantPanel .paa-suggestions button:hover{background:#1b3a60;border-color:#5795d5}
+#projectAssistantPanel .paa-thread{display:grid;gap:9px;max-height:460px;min-height:190px;overflow:auto;padding:12px;border:1px solid #2b3e5d;border-radius:14px;background:#091426;scrollbar-width:thin;overscroll-behavior:contain}
+#projectAssistantPanel .paa-welcome{min-height:165px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;color:#a9bbd3}
+#projectAssistantPanel .paa-welcome>span{width:37px;height:37px;display:grid;place-items:center;border-radius:50%;background:#2563eb24;color:#9dccff;font-size:20px;margin-bottom:8px}
+#projectAssistantPanel .paa-welcome b{font-size:12px;color:#e7f1ff}
+#projectAssistantPanel .paa-welcome p{max-width:530px;font-size:10px;line-height:1.9;margin:5px 0 0}
+#projectAssistantPanel .paa-message{max-width:min(92%,790px);padding:10px 12px;border:1px solid #2e4260;border-radius:12px;background:#13213a;justify-self:start;min-width:0}
+#projectAssistantPanel .paa-user{justify-self:end;background:#142b49;border-color:#315987}
+#projectAssistantPanel .paa-message-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+#projectAssistantPanel .paa-message-top b{font-size:9px;color:#9ecbff}
+#projectAssistantPanel .paa-user .paa-message-top b{color:#b9ddff}
+#projectAssistantPanel .paa-message-top button{border:0;background:transparent;color:#8fa7c5;font-size:8px;padding:2px 4px}
+#projectAssistantPanel .paa-message-text{font-size:10px;line-height:1.95;color:#e0eafa;white-space:pre-wrap;overflow-wrap:anywhere}
+#projectAssistantPanel .paa-status{margin:8px 2px;color:#90a7c4;font-size:9px;line-height:1.7;min-height:17px}
+#projectAssistantPanel .paa-form{padding:10px;border:1px solid #2e4567;border-radius:13px;background:#101d32}
+#projectAssistantPanel .paa-form textarea{display:block;width:100%;min-height:76px;resize:vertical;border:0;outline:0;background:transparent;color:#f2f7ff;font:11px/1.9 Tahoma,Arial,sans-serif}
+#projectAssistantPanel .paa-form textarea::placeholder{color:#8194af}
+#projectAssistantPanel .paa-form:focus-within{border-color:#55a8f3;box-shadow:0 0 0 3px #2563eb1c}
+#projectAssistantPanel .paa-form-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:8px;border-top:1px solid #293e5d;color:#8498b5;font-size:8px}
+#projectAssistantPanel .paa-send{padding:8px 14px;border:0;border-radius:9px;background:linear-gradient(135deg,#3b82f6,#38bdf8);color:#07172d;box-shadow:0 5px 16px #2563eb33}
+#projectAssistantPanel .paa-send span{margin-right:5px}
+#projectAssistantPanel .paa-footnote{margin-top:9px;color:#7f93af;font-size:8px;line-height:1.8}
+@media(max-width:760px){#projectAssistantPanel{padding:12px}#projectAssistantPanel .paa-head{display:block}#projectAssistantPanel .paa-head-actions{margin-top:10px}#projectAssistantPanel .paa-message{max-width:100%}#projectAssistantPanel .paa-thread{max-height:390px;padding:8px}#projectAssistantPanel .paa-context-row span{font-size:7px}}
+@media(prefers-reduced-motion:reduce){#projectAssistantPanel *{scroll-behavior:auto!important;transition:none!important}}

@@ -63,7 +63,7 @@ jobs:
               raise SystemExit("No executable inline JavaScript found")
           print(f"Extracted {total} executable inline script(s) from all interactive HTML pages.")
           PY
-          for file in creator-suite.js enhancements.js theme.js platform-hub.js production-studio.js production-studio-pro.js project-assets.js sidebar-organizer.js projects-hub.js content-pack-pro.js library-center.js visitor-tracker.js control-center.js workspace-pro.js service-worker.js language.js; do
+          for file in creator-suite.js enhancements.js theme.js platform-hub.js production-studio.js production-studio-pro.js project-assets.js project-assistant.js sidebar-organizer.js projects-hub.js content-pack-pro.js library-center.js visitor-tracker.js control-center.js workspace-pro.js service-worker.js language.js; do
             echo "Checking $file"
             node --check "$file"
           done
@@ -104,7 +104,7 @@ jobs:
             const count = platformHub.split(needle).length - 1;
             assert(count === 1, 'Expected exactly one click handler for ' + id + ', found ' + count);
           }
-          assert(worker.includes("entelaqtak-shell-v80"), 'Service worker cache version was not bumped.');
+          assert(worker.includes("entelaqtak-shell-v81"), 'Service worker cache version was not bumped.');
           assert(!worker.includes("ignoreSearch:true") && !worker.includes("ignoreSearch: true") && worker.includes("caches.match(request)"), 'Service worker must preserve versioned asset URLs in cache lookups.');
           const visitor = fs.readFileSync('visitor-tracker.js', 'utf8');
           const signup = fs.readFileSync('supabase/functions/username-signup/index.ts', 'utf8');
@@ -142,6 +142,14 @@ jobs:
           assert(projectAssets.includes("entelaqtak-project-assets") && projectAssets.includes('getSupabaseClient') && projectAssets.includes('deleteProjectFiles'), 'Project Assets storage integration is incomplete.');
           assert(projectAssetsMigration.includes("public = false") && projectAssetsMigration.includes('storage.foldername(name)') && projectAssetsMigration.includes('auth.uid()'), 'Project Assets private bucket policies are missing.');
           assert(worker.includes("'./project-assets.js'") && worker.includes("'./project-assets.css'"), 'Project Assets offline assets are missing.');
+          const projectAssistant = fs.readFileSync('project-assistant.js', 'utf8');
+          const projectAssistantCss = fs.readFileSync('project-assistant.css', 'utf8');
+          const aiAssistant = fs.readFileSync('supabase/functions/ai-assistant/index.ts', 'utf8');
+          assert(workspace.includes('project-assistant.css?v=20261125-project-assistant-1') && workspace.includes('project-assistant.js?v=20261125-project-assistant-1'), 'Project Assistant assets are not linked.');
+          assert(projectAssistant.includes("app.callAI('project_assistant'") && projectAssistant.includes('aiConversation'), 'Project Assistant chat or per-project history is missing.');
+          assert(projectAssets.includes('readTextAttachment') && projectAssistant.includes('readTextAttachment'), 'Project Assistant text attachment context is unavailable.');
+          assert(aiAssistant.includes('"project_assistant"') && aiAssistant.includes('project_assistant:'), 'Project Assistant Edge Function tool is missing.');
+          assert(projectAssistantCss.includes('#projectAssistantPanel') && worker.includes("'./project-assistant.js'") && worker.includes("'./project-assistant.css'"), 'Project Assistant styles or offline assets are missing.');
           assert(sidebar.includes('Sidebar layout repair v7') && sidebar.includes('flex:0 0 auto!important') && sidebar.includes('>.nav-section-items>button[data-view]>.nav-label'), 'Sidebar sections and labels must retain their natural vertical layout.');
           assert(sidebar.includes('@media(min-width:1101px)') && sidebar.includes('@media(max-width:1100px)') && sidebar.includes('html[dir="ltr"].sidebar-js-ready'), 'Desktop/mobile or LTR sidebar positioning is incomplete.');
           assert(responsive.includes('Navigation Redesign v5') && responsive.includes('#workspaceSidebar>.workspace-card') && responsive.includes('--nav-blue:#3b82f6'), 'Premium sidebar redesign styles are missing.');
@@ -213,7 +221,7 @@ jobs:
           if "unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js" not in admin:
               errors.append("admin.html: Supabase CDN fallback is missing")
           worker = Path("service-worker.js").read_text(encoding="utf-8")
-          if "entelaqtak-shell-v80" not in worker:
+          if "entelaqtak-shell-v81" not in worker:
               errors.append("service-worker.js: shell cache version was not bumped")
           if "'./sidebar-system.css'" not in worker:
               errors.append("service-worker.js: new sidebar stylesheet missing from offline cache")

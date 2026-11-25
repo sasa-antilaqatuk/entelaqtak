@@ -1,5 +1,5 @@
 'use strict';
-const CACHE_NAME = 'entelaqtak-shell-v80';
+const CACHE_NAME = 'entelaqtak-shell-v81';
 const APP_FILES = [
   './', './index.html', './workspace.html',
   './ui-polish.css', './ui-polish.css?v=20261121-nav-compact-1',
@@ -12,7 +12,9 @@ const APP_FILES = [
   './workspace-pro.css', './workspace-pro.css?v=20261121-workspace-pro-1',
   './projects-hub.css', './projects-hub.css?v=20261125-project-hub-1',
   './project-assets.css', './project-assets.css?v=20261125-project-assets-1',
+  './project-assistant.css', './project-assistant.css?v=20261125-project-assistant-1',
   './theme.js', './language.js', './creator-suite.js', './enhancements.js',
+  './project-assistant.js', './project-assistant.js?v=20261125-project-assistant-1',
   './platform-hub.js', './production-studio.js', './production-studio.js?v=20261121-production-robust-2',
   './production-studio-pro.js', './project-assets.js', './project-assets.js?v=20261125-project-assets-1', './projects-hub.js', './projects-hub.js?v=20261125-project-hub-1', './sidebar-organizer.js', './content-pack-pro.js',
   './library-center.js', './visitor-tracker.js', './visitor-tracker.js?v=20261125-heartbeat-1',
