@@ -1,5 +1,5 @@
 'use strict';
-const CACHE_NAME = 'entelaqtak-shell-v81';
+const CACHE_NAME = 'entelaqtak-shell-v82';
 const APP_FILES = [
   './', './index.html', './workspace.html',
   './ui-polish.css', './ui-polish.css?v=20261121-nav-compact-1',

@@ -40,3 +40,17 @@
 #projectAssistantPanel .paa-footnote{margin-top:9px;color:#7f93af;font-size:8px;line-height:1.8}
 @media(max-width:760px){#projectAssistantPanel{padding:12px}#projectAssistantPanel .paa-head{display:block}#projectAssistantPanel .paa-head-actions{margin-top:10px}#projectAssistantPanel .paa-message{max-width:100%}#projectAssistantPanel .paa-thread{max-height:390px;padding:8px}#projectAssistantPanel .paa-context-row span{font-size:7px}}
 @media(prefers-reduced-motion:reduce){#projectAssistantPanel *{scroll-behavior:auto!important;transition:none!important}}
+#projectAssistantPanel .paa-proposal{margin-top:10px;padding:12px;border:1px solid #3d6595;border-radius:12px;background:linear-gradient(145deg,#142d4b,#10233b);min-width:0}
+#projectAssistantPanel .paa-proposal-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+#projectAssistantPanel .paa-proposal-top span{font-size:8px;font-weight:900;color:#9dccff}
+#projectAssistantPanel .paa-proposal-top b{font-size:8px;padding:4px 7px;border:1px solid #3a5b7f;border-radius:99px;color:#bddcff}
+#projectAssistantPanel .paa-proposal h4{font-size:11px;margin:8px 0 4px;color:#f2f7ff}
+#projectAssistantPanel .paa-proposal p{font-size:9px;line-height:1.8;color:#b7c9df;margin:0 0 8px}
+#projectAssistantPanel .paa-proposal pre{max-height:155px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;padding:9px;border:1px solid #304765;border-radius:9px;background:#09182b;color:#dceaff;font:9px/1.85 Tahoma,Arial,sans-serif;margin:0}
+#projectAssistantPanel .paa-proposal-actions{display:flex;align-items:center;justify-content:space-between;gap:9px;flex-wrap:wrap;margin-top:10px}
+#projectAssistantPanel .paa-proposal-actions>span{font-size:8px;color:#91a7c2}
+#projectAssistantPanel .paa-proposal-actions .paa-apply,#projectAssistantPanel .paa-proposal-actions .paa-undo{padding:8px 11px;border-radius:9px;font-size:9px}
+#projectAssistantPanel .paa-proposal-actions .paa-apply{border:0;background:linear-gradient(135deg,#3b82f6,#38bdf8);color:#07172d}
+#projectAssistantPanel .paa-proposal-actions .paa-undo{border:1px solid #a47b50;background:#49331d;color:#ffe2bf}
+#projectAssistantPanel .paa-proposal-actions .paa-applied{color:#9fe8c3;font-weight:800}
+#projectAssistantPanel .paa-proposal-actions .paa-restored{color:#f3d39a;font-weight:800}

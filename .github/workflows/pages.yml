@@ -104,7 +104,7 @@ jobs:
             const count = platformHub.split(needle).length - 1;
             assert(count === 1, 'Expected exactly one click handler for ' + id + ', found ' + count);
           }
-          assert(worker.includes("entelaqtak-shell-v81"), 'Service worker cache version was not bumped.');
+          assert(worker.includes("entelaqtak-shell-v82"), 'Service worker cache version was not bumped.');
           assert(!worker.includes("ignoreSearch:true") && !worker.includes("ignoreSearch: true") && worker.includes("caches.match(request)"), 'Service worker must preserve versioned asset URLs in cache lookups.');
           const visitor = fs.readFileSync('visitor-tracker.js', 'utf8');
           const signup = fs.readFileSync('supabase/functions/username-signup/index.ts', 'utf8');
@@ -147,6 +147,9 @@ jobs:
           const aiAssistant = fs.readFileSync('supabase/functions/ai-assistant/index.ts', 'utf8');
           assert(workspace.includes('project-assistant.css?v=20261125-project-assistant-1') && workspace.includes('project-assistant.js?v=20261125-project-assistant-1'), 'Project Assistant assets are not linked.');
           assert(projectAssistant.includes("app.callAI('project_assistant'") && projectAssistant.includes('aiConversation'), 'Project Assistant chat or per-project history is missing.');
+          assert(projectAssistant.includes('applyProposal') && projectAssistant.includes('undoProposal') && projectAssistant.includes('aiFieldHistory'), 'Project Assistant approval, backup or undo controls are missing.');
+          assert(projectAssistant.includes('FIELD_RULES') && projectAssistant.includes('data-paa-apply') && projectAssistant.includes('data-paa-undo'), 'Project Assistant field allowlist or confirmation buttons are missing.');
+          assert(aiAssistant.includes('projectProposalLimits') && aiAssistant.includes('proposal: candidate.content'), 'Project Assistant server-side proposal validation is missing.');
           assert(projectAssets.includes('readTextAttachment') && projectAssistant.includes('readTextAttachment'), 'Project Assistant text attachment context is unavailable.');
           assert(aiAssistant.includes('"project_assistant"') && aiAssistant.includes('project_assistant:'), 'Project Assistant Edge Function tool is missing.');
           assert(projectAssistantCss.includes('#projectAssistantPanel') && worker.includes("'./project-assistant.js'") && worker.includes("'./project-assistant.css'"), 'Project Assistant styles or offline assets are missing.');
@@ -221,7 +224,7 @@ jobs:
           if "unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js" not in admin:
               errors.append("admin.html: Supabase CDN fallback is missing")
           worker = Path("service-worker.js").read_text(encoding="utf-8")
-          if "entelaqtak-shell-v81" not in worker:
+          if "entelaqtak-shell-v82" not in worker:
               errors.append("service-worker.js: shell cache version was not bumped")
           if "'./sidebar-system.css'" not in worker:
               errors.append("service-worker.js: new sidebar stylesheet missing from offline cache")
